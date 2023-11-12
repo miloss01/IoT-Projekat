@@ -4,6 +4,10 @@ from settings import load_settings
 from components.dht import run_dht
 from components.uds import run_uds
 from components.pir import run_pir
+from components.button import run_button
+from components.led import run_led
+from components.buzz import run_buzz
+from components.keypad import run_keypad
 import time
 
 # try:
@@ -11,6 +15,31 @@ import time
 #     GPIO.setmode(GPIO.BCM)
 # except:
 #     pass
+
+def menu(settings):
+  print("1 - DS1 - Door Sensor")
+  print("2 - DL - Door Light")
+  print("3 - DB - Door Buzzer")
+  print("4 - DMS - Door Membrane Switch")
+  print("X - Exit")
+
+  ds1_settings = settings['DS1']
+  dl_settings = settings['DL']
+  db_settings = settings['DB']
+  dms_settings = settings['DMS']
+
+  while True:
+    option = input("")
+    if option == "X":
+      break
+    if option == "1":
+      run_button(ds1_settings, "DS1")
+    if option == "2":
+      run_led(dl_settings, "DL")
+    if option == "3":
+      run_buzz(db_settings, "DB")
+    if option == "4":
+      run_keypad(dms_settings, "DMS")
 
 
 if __name__ == "__main__":
@@ -32,16 +61,18 @@ if __name__ == "__main__":
     rpir1_settings = settings['RPIR1']
     rpir2_settings = settings['RPIR2']
 
-    # run_dht(rdht1_settings, threads, stop_event, "RDHT1")
-    # run_dht(rdht2_settings, threads, stop_event, "RDHT2")
-    # run_uds(dus1_settings, threads, stop_event, "DUS1")
+    run_dht(rdht1_settings, threads, stop_event, "RDHT1")
+    run_dht(rdht2_settings, threads, stop_event, "RDHT2")
+    
+    run_uds(dus1_settings, threads, stop_event, "DUS1")
 
     run_pir(dpir1_settings, threads, stop_event, "DPIR1", dpir1_event)
     run_pir(rpir1_settings, threads, stop_event, "RPIR1", rpir1_event)
     run_pir(rpir2_settings, threads, stop_event, "RPIR2", rpir2_event)
 
-    while True:
-      time.sleep(1)
+    menu(settings)
+    raise KeyboardInterrupt
+
   except KeyboardInterrupt:
     print('Stopping app')
     for t in threads:

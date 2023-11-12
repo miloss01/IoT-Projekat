@@ -23,7 +23,7 @@ def run_pir_simulator(delay, callback, stop_event, code, event):
     time.sleep(delay)
     callback(d, code, event)
     if event.is_set():
-      print("Nesto")
+      print("Motion detection event trigger.")
     if stop_event.is_set():
       break
 
