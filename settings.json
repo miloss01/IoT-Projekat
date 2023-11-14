@@ -26,7 +26,8 @@
         "delay": 2
     },
     "DS1": {
-        "simulated": true
+        "simulated": true,
+        "port_button": 17
     },
     "DL": {
         "simulated": true
