@@ -1,0 +1,50 @@
+{
+    "RDHT1": {
+        "simulated": true,
+        "pin": 17,
+        "delay": 2
+    },
+    "RDHT2": {
+        "simulated": true,
+        "pin": 17,
+        "delay": 3
+    },
+    "DUS1": {
+        "simulated": true,
+        "delay": 3
+    },
+    "DPIR1": {
+        "simulated": true,
+        "delay": 2
+    },
+    "RPIR1": {
+        "simulated": true,
+        "delay": 2
+    },
+    "RPIR2": {
+        "simulated": true,
+        "delay": 2
+    },
+    "DS1": {
+        "simulated": true,
+        "port_button": 17
+    },
+    "DL": {
+        "simulated": true
+    },
+    "DB": {
+        "simulated": true
+    },
+    "DMS": {
+        "simulated": true,
+        "text": "1234AB",
+        "C1": 25,
+        "C2": 8,
+        "C3": 7,
+        "C4": 1,
+        "R1": 12,
+        "R2": 16,
+        "R3": 20,
+        "R4": 21
+    }
+}
