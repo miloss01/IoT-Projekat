@@ -1,10 +1,20 @@
 import threading
 import time
 import random
+import json
+import paho.mqtt.publish as publish
 
 def dht_callback(humidity, temperature, code):
   t = time.localtime()
   print(f"Code: {code}, Timestamp: {time.strftime('%H:%M:%S', t)}, Humidity: {humidity}%, Temperature: {temperature}°C")
+  batch = []
+  payload = {
+    "measurement": "some measurement",
+    "some_tag": "tag  " + str(random.randint(1, 100)),
+    "some_field": "field" + str(random.randint(1, 100))
+  }
+  batch.append(('example_topic', json.dumps(payload), 0, True))
+  publish.multiple(batch, hostname="localhost", port=1883)
 
 def generate_values(initial_temp = 25, initial_humidity=20):
   temperature = initial_temp
