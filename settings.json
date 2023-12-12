@@ -34,7 +34,9 @@
         "port_button": 17
     },
     "DL": {
-        "simulated": true
+        "simulated": true,
+        "name": "DL",
+        "pi": 1
     },
     "DB": {
         "simulated": true

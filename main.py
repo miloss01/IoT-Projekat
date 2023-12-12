@@ -35,7 +35,7 @@ def menu(settings):
     if option == "1":
       run_button(ds1_settings, "DS1")
     if option == "2":
-      run_led(dl_settings, "DL")
+      run_led(dl_settings)
     if option == "3":
       run_buzz(db_settings, "DB")
     if option == "4":
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     rpir1_settings = settings['RPIR1']
     rpir2_settings = settings['RPIR2']
 
-    run_dht(rdht1_settings, threads, stop_event)
+    # run_dht(rdht1_settings, threads, stop_event)
     # run_dht(rdht2_settings, threads, stop_event, "RDHT2")
     
     # run_uds(dus1_settings, threads, stop_event, "DUS1")
