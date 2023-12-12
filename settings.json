@@ -19,15 +19,24 @@
     },
     "DPIR1": {
         "simulated": true,
-        "delay": 2
+        "delay": 2,
+        "pin": 18,
+        "name": "DPIR1",
+        "pi": 1
     },
     "RPIR1": {
         "simulated": true,
-        "delay": 2
+        "delay": 2,
+        "pin": 18,
+        "name": "RPIR1",
+        "pi": 1
     },
     "RPIR2": {
         "simulated": true,
-        "delay": 2
+        "delay": 2,
+        "pin": 18,
+        "name": "RPIR2",
+        "pi": 1
     },
     "DS1": {
         "simulated": true,
