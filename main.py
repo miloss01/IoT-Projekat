@@ -37,7 +37,7 @@ def menu(settings):
     if option == "2":
       run_led(dl_settings)
     if option == "3":
-      run_buzz(db_settings, "DB")
+      run_buzz(db_settings)
     if option == "4":
       run_keypad(dms_settings, "DMS")
 

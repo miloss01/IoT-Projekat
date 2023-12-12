@@ -36,10 +36,14 @@
     "DL": {
         "simulated": true,
         "name": "DL",
-        "pi": 1
+        "pi": 1,
+        "pin": 18
     },
     "DB": {
-        "simulated": true
+        "simulated": true,
+        "name": "DB",
+        "pi": 1,
+        "pin": 18
     },
     "DMS": {
         "simulated": true,

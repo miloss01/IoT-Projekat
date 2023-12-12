@@ -178,6 +178,7 @@ def run_dht(settings, threads, stop_event):
     threads.append(dht_thread)
     print(f"{settings['name']} simulator started.")
   else:
+    # GPIO.setmode(GPIO.BCM)
     # dht = DHT(settings['pin'])
     dht = None
     dht_thread = threading.Thread(target = run_dht_real, args=(dht, dht_callback, stop_event, publish_event, settings))
