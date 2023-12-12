@@ -15,7 +15,11 @@
     },
     "DUS1": {
         "simulated": true,
-        "delay": 3
+        "delay": 3,
+        "pi": 1,
+        "name": "DUS1",
+        "trig": 18,
+        "echo": 18
     },
     "DPIR1": {
         "simulated": true,
