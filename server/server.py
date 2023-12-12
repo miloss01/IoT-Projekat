@@ -7,19 +7,26 @@ import json
 
 app = Flask(__name__)
 
-# milos token O-rpPmvuYpaFJYp2kiJE15pGlRQqta80KCbUL13sdjD5MbAnjoBZn9HHrGT9EDVoAygtjxnVCQ_4mb4xlfMbZA==
+MQTT_HOSTNAME = "localhost"
+MQTT_PORT = 1883
+
+INFLUXDB_HOSTNAME = "localhost"
+INFLUXDB_PORT = 8086
+INFLUXDB_ORGANISATION = "FTN"
+INFLUXDB_BUCKET = "iot_bucket"
+INFLUXDB_TOKEN_M = "O-rpPmvuYpaFJYp2kiJE15pGlRQqta80KCbUL13sdjD5MbAnjoBZn9HHrGT9EDVoAygtjxnVCQ_4mb4xlfMbZA=="
 
 # InfluxDB Configuration
-token = "O-rpPmvuYpaFJYp2kiJE15pGlRQqta80KCbUL13sdjD5MbAnjoBZn9HHrGT9EDVoAygtjxnVCQ_4mb4xlfMbZA=="
-org = "FTN"
-url = "http://localhost:8086"
-bucket = "iot_bucket"
+token = INFLUXDB_TOKEN_M
+org = INFLUXDB_ORGANISATION
+url = f"http://{INFLUXDB_HOSTNAME}:{INFLUXDB_PORT}"
+bucket = INFLUXDB_BUCKET
 influxdb_client = InfluxDBClient(url=url, token=token, org=org)
 
 
 # MQTT Configuration
 mqtt_client = mqtt.Client()
-mqtt_client.connect("localhost", 1883, 60)
+mqtt_client.connect(MQTT_HOSTNAME, MQTT_PORT, 60)
 mqtt_client.loop_start()
 
 def on_connect(client, userdata, flags, rc):
@@ -31,12 +38,11 @@ mqtt_client.on_message = lambda client, userdata, msg: save_to_db(json.loads(msg
 
 
 def save_to_db(data):
-    print(data)
     write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)
     point = (
         Point(data["measurement"])
         .tag("some_tag", data["some_tag"])
-        .field("some_field", data["some_field"])
+        .field("some_field1", data["some_field1"])
     )
     write_api.write(bucket=bucket, org=org, record=point)
 
@@ -50,6 +56,27 @@ def store_data():
         return jsonify({"status": "success"})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)})
+    
+def handle_influx_query(query):
+    try:
+        query_api = influxdb_client.query_api()
+        tables = query_api.query(query, org=org)
+
+        container = []
+        for table in tables:
+            for record in table.records:
+                container.append(record.values)
+
+        return jsonify({"status": "success", "data": container})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)})
+
+
+@app.route('/simple_query', methods=['GET'])
+def retrieve_simple_data():
+    query = f"""from(bucket: "{bucket}")
+    |> range(start: -10mo)"""
+    return handle_influx_query(query)
 
 
 if __name__ == '__main__':

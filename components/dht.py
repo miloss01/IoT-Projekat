@@ -8,10 +8,11 @@ def dht_callback(humidity, temperature, code):
   t = time.localtime()
   print(f"Code: {code}, Timestamp: {time.strftime('%H:%M:%S', t)}, Humidity: {humidity}%, Temperature: {temperature}°C")
   batch = []
+  rnd = random.randint(1, 100)
   payload = {
     "measurement": "some measurement",
-    "some_tag": "tag  " + str(random.randint(1, 100)),
-    "some_field": "field" + str(random.randint(1, 100))
+    "some_tag": f"tag {rnd}",
+    "some_field1": f"field {rnd}"
   }
   batch.append(('example_topic', json.dumps(payload), 0, True))
   publish.multiple(batch, hostname="localhost", port=1883)
