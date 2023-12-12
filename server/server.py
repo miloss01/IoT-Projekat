@@ -30,7 +30,8 @@ mqtt_client.connect(MQTT_HOSTNAME, MQTT_PORT, 60)
 mqtt_client.loop_start()
 
 def on_connect(client, userdata, flags, rc):
-    mqtt_client.subscribe("example_topic")
+    mqtt_client.subscribe("Temperature")
+    mqtt_client.subscribe("Humidity")
     print("connected")
 
 mqtt_client.on_connect = on_connect
@@ -41,8 +42,10 @@ def save_to_db(data):
     write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)
     point = (
         Point(data["measurement"])
-        .tag("some_tag", data["some_tag"])
-        .field("some_field1", data["some_field1"])
+        .tag("simulated", data["simulated"])
+        .tag("pi", data["pi"])
+        .tag("name", data["name"])
+        .field("measurement", data["value"])
     )
     write_api.write(bucket=bucket, org=org, record=point)
 

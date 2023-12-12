@@ -61,7 +61,7 @@ if __name__ == "__main__":
     rpir1_settings = settings['RPIR1']
     rpir2_settings = settings['RPIR2']
 
-    run_dht(rdht1_settings, threads, stop_event, "RDHT1")
+    run_dht(rdht1_settings, threads, stop_event)
     # run_dht(rdht2_settings, threads, stop_event, "RDHT2")
     
     # run_uds(dus1_settings, threads, stop_event, "DUS1")
