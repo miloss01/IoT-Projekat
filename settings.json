@@ -43,7 +43,8 @@
         "simulated": true,
         "name": "DB",
         "pi": 1,
-        "pin": 18
+        "pin": 18,
+        "duration": 2
     },
     "DMS": {
         "simulated": true,

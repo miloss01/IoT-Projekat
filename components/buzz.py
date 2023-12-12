@@ -49,8 +49,23 @@ def run_buzz_simulator(settings):
 
   print(f"Code: {settings['name']}, Timestamp: {time.strftime('%H:%M:%S', t)}, Buzzzzz")
 
+def buzz(pitch, duration, buzzer_pin):
+  period = 1.0 / pitch
+  delay = period / 2
+  cycles = int(duration * pitch)
+  for i in range(cycles):
+    # GPIO.output(buzzer_pin, True)
+    time.sleep(delay)
+    # GPIO.output(buzzer_pin, False)
+    time.sleep(delay)
+
+
 def run_buzz_real(settings):
   t = time.localtime()
+
+  pitch = 440
+  duration = 0.1
+  buzz(pitch, duration, settings["pin"])
 
   global publish_data_counter, publish_data_limit
 
