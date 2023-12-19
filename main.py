@@ -39,7 +39,7 @@ def menu(settings):
     if option == "3":
       run_buzz(db_settings)
     if option == "4":
-      run_keypad(dms_settings, "DMS")
+      run_keypad(dms_settings)
 
 
 if __name__ == "__main__":

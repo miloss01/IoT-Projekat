@@ -64,6 +64,8 @@
     },
     "DMS": {
         "simulated": true,
+        "name": "DMS",
+        "pi": 1,
         "text": "1234AB",
         "C1": 25,
         "C2": 8,

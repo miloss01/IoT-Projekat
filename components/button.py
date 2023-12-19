@@ -51,11 +51,7 @@ def run_button_simulator(settings):
 
   print(f"Code: {settings['name']}, Timestamp: {time.strftime('%H:%M:%S', t)}, Button clicked.")
 
-# def button_pressed():
-#   t = time.localtime()
-#   print(f"Timestamp: {time.strftime('%H:%M:%S', t)}, Button clicked.")
-
-# def run_button_real(settings, code):
+# def run_button_real(settings):
 #   port_button = settings["port_button"]
 #   GPIO.setmode(GPIO.BCM)
 #   GPIO.setup(port_button, GPIO.IN, pull_up_down = GPIO.PUD_UP)
@@ -65,4 +61,4 @@ def run_button(settings):
   if settings['simulated']:
     run_button_simulator(settings)
   # else:
-  #   run_button_real(settings, code)
+  #   run_button_real(settings)

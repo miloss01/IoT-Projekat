@@ -37,6 +37,7 @@ def on_connect(client, userdata, flags, rc):
     mqtt_client.subscribe("PIR")
     mqtt_client.subscribe("UDS")
     mqtt_client.subscribe("DS1")
+    mqtt_client.subscribe("DMS")
     print("connected")
 
 mqtt_client.on_connect = on_connect
