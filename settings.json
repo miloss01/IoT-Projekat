@@ -44,7 +44,10 @@
     },
     "DS1": {
         "simulated": true,
-        "port_button": 17
+        "name": "DS1",
+        "port_button": 17,
+        "pi": 1,
+        "pin": 18
     },
     "DL": {
         "simulated": true,

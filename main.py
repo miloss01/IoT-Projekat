@@ -33,7 +33,7 @@ def menu(settings):
     if option == "X":
       break
     if option == "1":
-      run_button(ds1_settings, "DS1")
+      run_button(ds1_settings)
     if option == "2":
       run_led(dl_settings)
     if option == "3":
@@ -63,9 +63,9 @@ if __name__ == "__main__":
 
     # run_dht(rdht1_settings, threads, stop_event)
     # run_dht(rdht2_settings, threads, stop_event)
-    
+    #
     # run_uds(dus1_settings, threads, stop_event)
-
+    #
     # run_pir(dpir1_settings, threads, stop_event, dpir1_event)
     # run_pir(rpir1_settings, threads, stop_event, rpir1_event)
     # run_pir(rpir2_settings, threads, stop_event, rpir2_event)
