@@ -47,7 +47,8 @@
         "name": "DS1",
         "port_button": 17,
         "pi": 1,
-        "pin": 18
+        "pin": 18,
+        "delay": 2
     },
     "DL": {
         "simulated": true,

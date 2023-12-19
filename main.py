@@ -17,13 +17,11 @@ import time
 #     pass
 
 def menu(settings):
-  print("1 - DS1 - Door Sensor")
+  print("1 - DMS - Door Membrane Switch")
   print("2 - DL - Door Light")
   print("3 - DB - Door Buzzer")
-  print("4 - DMS - Door Membrane Switch")
   print("X - Exit")
 
-  ds1_settings = settings['DS1']
   dl_settings = settings['DL']
   db_settings = settings['DB']
   dms_settings = settings['DMS']
@@ -33,13 +31,12 @@ def menu(settings):
     if option == "X":
       break
     if option == "1":
-      run_button(ds1_settings)
+      run_keypad(dms_settings)
     if option == "2":
       run_led(dl_settings)
     if option == "3":
       run_buzz(db_settings)
-    if option == "4":
-      run_keypad(dms_settings)
+
 
 
 if __name__ == "__main__":
@@ -52,6 +49,7 @@ if __name__ == "__main__":
   dpir1_event = threading.Event()
   rpir1_event = threading.Event()
   rpir2_event = threading.Event()
+  sensor_event = threading.Event()
 
   try:
     rdht1_settings = settings['RDHT1']
@@ -60,6 +58,7 @@ if __name__ == "__main__":
     dpir1_settings = settings['DPIR1']
     rpir1_settings = settings['RPIR1']
     rpir2_settings = settings['RPIR2']
+    ds1_settings = settings['DS1']
 
     # run_dht(rdht1_settings, threads, stop_event)
     # run_dht(rdht2_settings, threads, stop_event)
@@ -69,6 +68,8 @@ if __name__ == "__main__":
     # run_pir(dpir1_settings, threads, stop_event, dpir1_event)
     # run_pir(rpir1_settings, threads, stop_event, rpir1_event)
     # run_pir(rpir2_settings, threads, stop_event, rpir2_event)
+
+    run_button(ds1_settings, threads, stop_event, sensor_event)
 
     menu(settings)
     raise KeyboardInterrupt
