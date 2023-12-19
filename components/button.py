@@ -46,7 +46,7 @@ def sensor_callback(sensor_hold_value, settings, event, publish_event):
     "simulated": settings['simulated'],
     "pi": settings["pi"],
     "name": settings["name"],
-    "value": random.randrange(1, 6)
+    "value": sensor_hold_value
   }
 
   with counter_lock:
@@ -69,11 +69,29 @@ def run_sensor_simulator(callback, stop_event, settings, event, publish_event):
 
 
 
+# def button_pressed(settings):
+#   button_pressed_time = 0
+#   button_pressed = time.time()
+#
+#   try:
+#     while True:
+#       if GPIO.input(settings["port_button"]) == GPIO.LOW:
+#
+#         current_time = time.time()
+#         duration = current_time - button_pressed_time
+#         print(f"Button held for {duration:.2f} seconds")
+#       else:
+#         button_pressed_time = 0
+#       time.sleep(0.1)  # Add a small delay to avoid excessive checking
+#
+#   except KeyboardInterrupt:
+#     GPIO.cleanup()
+#
 # def run_button_real(settings):
 #   port_button = settings["port_button"]
 #   GPIO.setmode(GPIO.BCM)
 #   GPIO.setup(port_button, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-#   GPIO.add_event_detect(port_button, GPIO.RISING, callback = button_pressed, bouncetime = 100)
+#   GPIO.add_event_detect(port_button, GPIO.RISING, callback = button_pressed(settings), bouncetime = 100)
 
 def run_button(settings, threads, stop_event, event):
   if settings['simulated']:
