@@ -4,6 +4,54 @@ import json
 import paho.mqtt.publish as publish
 import threading
 
+#import RPi.GPIO as GPIO
+import time
+
+# these GPIO pins are connected to the keypad
+# change these according to your connections!
+R1 = 25
+R2 = 8
+R3 = 7
+R4 = 1
+
+C1 = 12
+C2 = 16
+C3 = 20
+C4 = 21
+
+# Initialize the GPIO pins
+#
+# GPIO.setwarnings(False)
+# GPIO.setmode(GPIO.BCM)
+#
+# GPIO.setup(R1, GPIO.OUT)
+# GPIO.setup(R2, GPIO.OUT)
+# GPIO.setup(R3, GPIO.OUT)
+# GPIO.setup(R4, GPIO.OUT)
+#
+# # Make sure to configure the input pins to use the internal pull-down resistors
+#
+# GPIO.setup(C1, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+# GPIO.setup(C2, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+# GPIO.setup(C3, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+# GPIO.setup(C4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+#
+# def readLine(line, characters):
+#   GPIO.output(line, GPIO.HIGH)
+#   pressed_character = None
+#
+#   if GPIO.input(C1) == 1:
+#     pressed_character = characters[0]
+#   elif GPIO.input(C2) == 1:
+#     pressed_character = characters[1]
+#   elif GPIO.input(C3) == 1:
+#     pressed_character = characters[2]
+#   elif GPIO.input(C4) == 1:
+#     pressed_character = characters[3]
+#
+#   GPIO.output(line, GPIO.LOW)
+#   return pressed_character
+
 dht_batch = []
 publish_data_counter = 0
 publish_data_limit = 5
@@ -50,24 +98,41 @@ def run_keypad_simulator(settings, dms_input):
     publish_event.set()
 
   print(f"Code: {settings['name']}, Timestamp: {time.strftime('%H:%M:%S', t)}, DMS input value: {dms_input}.")
+
+
+
 def run_keypad(settings):
-  if settings['simulated']:
-    dms_input = ""
-    while True:
-      value = ""
-      print("")
-      print("Current input: " + dms_input)
-      print("X - Submit input")
-      print("C - Cancel writing")
-      value = input("Enter number: ")
-      if value == "X" and len(dms_input) != 0:
-        print("SUBMITTED VALUE: " + dms_input)
-        run_keypad_simulator(settings, dms_input)
-        dms_input = ""
-        continue
-      if value == "C":
-        break
-      if value.isdigit() and len(value) == 1:
-        dms_input += value
-      else:
-        print("You must input one character number")
+  dms_input = ""
+  while True:
+    value = ""
+    print("")
+    print("Current input: " + dms_input)
+    print("X - Submit input")
+    print("C - Cancel writing")
+
+    # if(settings['simulated']):
+    #   pressed_key = None
+    #   while pressed_key is None:
+    #     for row, chars in zip([R1, R2, R3, R4], [["1", "2", "3", "A"], ["4", "5", "6", "B"],
+    #                                              ["7", "8", "9", "C"], ["*", "0", "#", "D"]]):
+    #       pressed_key = readLine(row, chars)
+    #       if pressed_key is not None:
+    #         break
+    #     time.sleep(0.2)
+    #   value = pressed_key
+    # else: U OVAJ ELSE IDE VALUE = INPUT("ENTER CHARACTER: ")
+    value = input("Enter character: ")
+
+    if value == "X" and len(dms_input) != 0:
+      print("SUBMITTED VALUE: " + dms_input)
+      run_keypad_simulator(settings, dms_input)
+      dms_input = ""
+      continue
+    if value == "C":
+      break
+    if (value.isdigit() or value in ['*','#','A','B','C','D'] ) and len(value) == 1:
+      dms_input += value
+    else:
+      print("You must input one character number")
+
+
