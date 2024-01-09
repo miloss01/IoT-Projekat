@@ -2,6 +2,7 @@ import time
 import random
 import json
 import paho.mqtt.publish as publish
+from . import constants as c
 import threading
 
 #import RPi.GPIO as GPIO
@@ -65,7 +66,7 @@ def publisher_task(event, dht_batch):
       local_dht_batch = dht_batch.copy()
       publish_data_counter = 0
       dht_batch.clear()
-    publish.multiple(local_dht_batch, hostname="localhost", port=1883)
+    publish.multiple(local_dht_batch, hostname=c.MQTT_HOSTNAME, port=c.MQTT_PORT)
     print(f'published {publish_data_limit} DMS input')
     event.clear()
 

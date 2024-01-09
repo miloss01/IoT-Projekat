@@ -46,15 +46,20 @@ mqtt_client.on_message = lambda client, userdata, msg: save_to_db(json.loads(msg
 
 
 def save_to_db(data):
-    write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)
-    point = (
-        Point(data["measurement"])
-        .tag("simulated", data["simulated"])
-        .tag("pi", data["pi"])
-        .tag("name", data["name"])
-        .field("measurement", data["value"])
-    )
-    write_api.write(bucket=bucket, org=org, record=point)
+    print(data)
+    try:
+        write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)
+        point = (
+            Point(data["measurement"])
+            .tag("simulated", data["simulated"])
+            .tag("pi", data["pi"])
+            .tag("name", data["name"])
+            .field("measurement", data["value"])
+        )
+        write_api.write(bucket=bucket, org=org, record=point)
+    except:
+        print("losa poruka")
+    
 
 
 # Route to store dummy data
@@ -90,4 +95,4 @@ def retrieve_simple_data():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=False)
+    app.run(debug=True, use_reloader=False, port=8088)
