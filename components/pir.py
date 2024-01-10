@@ -4,7 +4,7 @@ import random
 import json
 import paho.mqtt.publish as publish
 from . import constants as c
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 def generate_values(initial_detection = False):
   detection = initial_detection
@@ -81,5 +81,5 @@ def run_pir(settings, threads, stop_event, event):
     # GPIO.setmode(GPIO.BCM)
     # GPIO.setup(settings["pin"], GPIO.IN)
     # GPIO.add_event_detect(settings["pin"], GPIO.RISING, callback=lambda x: pir_callback(True, settings, event, publish_event))
-    # GPIO.add_event_detect(settings["pin"], GPIO.FALLING, callback=lambda x: pir_callback(False, settings, event, publish_event))
+    # # GPIO.add_event_detect(settings["pin"], GPIO.FALLING, callback=lambda x: pir_callback(False, settings, event, publish_event))
     print(f"{settings['name']} real started.")

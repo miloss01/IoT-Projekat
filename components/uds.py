@@ -99,9 +99,10 @@ def run_uds_real(settings, callback, stop_event):
     if stop_event.is_set():
       break
     # distance = get_distance(settings["trig"], settings["echo"])
-    distance = None
+    distance = None # izbrisi ovo kad koristis real
     if distance is not None:
       callback(distance, settings)
+    time.sleep(settings["delay"])
 
 def run_uds(settings, threads, stop_event):
   if settings['simulated']:

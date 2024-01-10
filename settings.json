@@ -14,17 +14,17 @@
         "name": "RDHT2"
     },
     "DUS1": {
-        "simulated": true,
-        "delay": 3,
+        "simulated": false,
+        "delay": 2,
         "pi": 1,
         "name": "DUS1",
-        "trig": 18,
-        "echo": 18
+        "trig": 23,
+        "echo": 24
     },
     "DPIR1": {
-        "simulated": true,
+        "simulated": false,
         "delay": 2,
-        "pin": 18,
+        "pin": 23,
         "name": "DPIR1",
         "pi": 1
     },
