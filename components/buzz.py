@@ -4,6 +4,7 @@ import random
 import json
 import paho.mqtt.publish as publish
 from . import constants as c
+# import RPi.GPIO as GPIO
 
 dht_batch = []
 publish_data_counter = 0
@@ -65,7 +66,7 @@ def run_buzz_real(settings):
   t = time.localtime()
 
   pitch = 440
-  duration = 0.1
+  duration = 2 # onoliko sekundi koliko hocemo da pisti
   buzz(pitch, duration, settings["pin"])
 
   global publish_data_counter, publish_data_limit

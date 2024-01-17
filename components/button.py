@@ -4,13 +4,14 @@ import json
 import paho.mqtt.publish as publish
 import threading
 from . import constants as c
-# import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 dht_batch = []
 publish_data_counter = 0
 publish_data_limit = 5
 counter_lock = threading.Lock()
 
+time_pressed = 0
 
 def generate_values(initial_detection = False):
   detection = initial_detection
@@ -57,7 +58,7 @@ def sensor_callback(sensor_hold_value, settings, event, publish_event):
   if publish_data_counter >= publish_data_limit:
     publish_event.set()
 
-  print(f"Code: {settings['name']}, Timestamp: {time.strftime('%H:%M:%S', t)}, Button clicked.")
+  print(f"Code: {settings['name']}, Timestamp: {time.strftime('%H:%M:%S', t)}, Button hold for {sensor_hold_value:.2f}.")
 
 def run_sensor_simulator(callback, stop_event, settings, event, publish_event):
   for d in generate_values():
@@ -68,32 +69,31 @@ def run_sensor_simulator(callback, stop_event, settings, event, publish_event):
     if stop_event.is_set():
       break
 
+def button_check_release(callback, settings, event, publish_event):
+  pressed_at = time.time()
+  try:
+    while True:
+      if GPIO.input(settings["port_button"]) == GPIO.HIGH:
+        current_time = time.time()
+        duration = current_time - pressed_at
+        callback(duration, settings, event, publish_event)
+        # print(f"Button held for {duration:.2f} seconds")
+        return
+      time.sleep(1)  # Add a small delay to avoid excessive checking
+
+  except KeyboardInterrupt:
+    GPIO.cleanup()
+
+def button_pressed(callback, settings, event, publish_event):
+  release_thread = threading.Thread(target=button_check_release, args=(callback, settings, event, publish_event))
+  release_thread.start()
 
 
-# def button_pressed(callback, settings, event, publish_event):
-#   button_pressed_time = 0
-#   button_pressed = time.time()
-#
-#   try:
-#     while True:
-#       if GPIO.input(settings["port_button"]) == GPIO.LOW:
-#
-#         current_time = time.time()
-#         duration = current_time - button_pressed_time
-#         callback(duration, settings, event, publish_event)
-#         print(f"Button held for {duration:.2f} seconds")
-#       else:
-#         button_pressed_time = 0
-#       time.sleep(0.1)  # Add a small delay to avoid excessive checking
-#
-#   except KeyboardInterrupt:
-#     GPIO.cleanup()
-#
-# def run_button_real(callback, stop_event, settings, event, publish_event):
-#   port_button = settings["port_button"]
-#   GPIO.setmode(GPIO.BCM)
-#   GPIO.setup(port_button, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-#   GPIO.add_event_detect(port_button, GPIO.RISING, callback = button_pressed(callback, settings, event, publish_event), bouncetime = 100)
+def run_button_real(callback, stop_event, settings, event, publish_event):
+  port_button = settings["port_button"]
+  GPIO.setmode(GPIO.BCM)
+  GPIO.setup(port_button, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+  GPIO.add_event_detect(port_button, GPIO.FALLING, callback = lambda x: button_pressed(callback, settings, event, publish_event), bouncetime = 500)
 
 def run_button(settings, threads, stop_event, event):
   if settings['simulated']:
@@ -103,8 +103,7 @@ def run_button(settings, threads, stop_event, event):
     print(f"{settings['name']} simulator started.")
     #run_button_simulator(settings)
   else:
-  #   run_button_real(settings)
-  #   sensor_thread = threading.Thread(target=run_button_real, args=(sensor_callback, stop_event, settings, event, publish_event))
-  #   sensor_thread.start()
-  #   threads.append(sensor_thread)
+    sensor_thread = threading.Thread(target=run_button_real, args=(sensor_callback, stop_event, settings, event, publish_event))
+    sensor_thread.start()
+    threads.append(sensor_thread)
     print(f"{settings['name']} real started.")

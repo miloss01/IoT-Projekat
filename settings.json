@@ -43,9 +43,9 @@
         "pi": 1
     },
     "DS1": {
-        "simulated": true,
+        "simulated": false,
         "name": "DS1",
-        "port_button": 17,
+        "port_button": 18,
         "pi": 1,
         "pin": 18,
         "delay": 2
@@ -57,7 +57,7 @@
         "pin": 18
     },
     "DB": {
-        "simulated": true,
+        "simulated": false,
         "name": "DB",
         "pi": 1,
         "pin": 18,

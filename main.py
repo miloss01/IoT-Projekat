@@ -69,7 +69,7 @@ if __name__ == "__main__":
     # run_pir(rpir1_settings, threads, stop_event, rpir1_event)
     # run_pir(rpir2_settings, threads, stop_event, rpir2_event)
 
-    # run_button(ds1_settings, threads, stop_event, sensor_event)
+    run_button(ds1_settings, threads, stop_event, sensor_event)
 
     menu(settings)
     raise KeyboardInterrupt
