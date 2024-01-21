@@ -2,10 +2,14 @@ from flask import Flask, jsonify, request
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 import paho.mqtt.client as mqtt
+from flask_cors import CORS, cross_origin
+from flask_socketio import SocketIO
 import json
 
 
 app = Flask(__name__)
+socketio = SocketIO(app, cors_allowed_origins="*")
+CORS(app)
 
 MQTT_HOSTNAME = "localhost"
 MQTT_PORT = 1883
@@ -93,6 +97,24 @@ def retrieve_simple_data():
     |> range(start: -10mo)"""
     return handle_influx_query(query)
 
+@app.route('/proba', methods=['GET'])
+def proba():
+    socketio.emit('probaSaServera', {"kljuc": "podaci"})
+    return jsonify({"status": "success"})
+
+
+@socketio.on('connect')
+def on_connect():
+    print('Client connected')
+
+@socketio.on('disconnect')
+def on_disconnect():
+    print("User disconnected")
+
+@socketio.on('probaNaServer')
+def messaging(message, methods=['GET', 'POST']):
+    print('received message: ' + str(message))
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=False, port=8088)
+    # app.run(debug=True, use_reloader=False, port=8088)
+    socketio.run(app, debug=True, use_reloader=False)
