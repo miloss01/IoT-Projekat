@@ -84,5 +84,11 @@
         "R2": 16,
         "R3": 20,
         "R4": 21
+    },
+    "B4SD": {
+        "simulated": true,
+        "name": "B4SD",
+        "pi": 1,
+        "delay": 4
     }
 }

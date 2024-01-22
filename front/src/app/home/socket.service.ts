@@ -68,4 +68,7 @@ export class SocketService {
   get_GDHT_hum() {
     return this.socket.fromEvent('GDHT-hum').pipe(map((data: any) => data))
   }
+  get_B4SD() {
+    return this.socket.fromEvent('B4SD').pipe(map((data: any) => data))
+  }
 }

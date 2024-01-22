@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit {
   rpir4_value: number = 0
   gdht_temp_value: number = 0
   gdht_hum_value: number = 0
+  b4sd_value: string = ""
 
   ngOnInit(): void {
     this.socketService.getMessage().subscribe(message => {
@@ -105,6 +106,11 @@ export class HomeComponent implements OnInit {
     this.socketService.get_GDHT_hum().subscribe(message => {
       console.log(message)
       this.gdht_hum_value = message["value"]
+    })
+
+    this.socketService.get_B4SD().subscribe(message => {
+      console.log(message)
+      this.b4sd_value = message["value"]
     })
   }
 

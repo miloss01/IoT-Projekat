@@ -8,7 +8,7 @@ import json
 import threading
 import time
 from components.buzz import change_buzz, run_buzz
-from components.LCD1602 import set_text, loop
+# from components.LCD1602 import set_text, loop
 from settings import load_settings
 
 
@@ -48,6 +48,7 @@ def on_connect(client, userdata, flags, rc):
     mqtt_client.subscribe("UDS")
     mqtt_client.subscribe("DS")
     mqtt_client.subscribe("DMS")
+    mqtt_client.subscribe("B4SD")
     print("connected")
 
 mqtt_client.on_connect = on_connect
@@ -101,6 +102,8 @@ def save_to_db(data):
                 handle_rpir(data)
             if sensor == "GDHT":
                 handle_gdht(data)
+            if sensor == "B4SD":
+                handle_b4sd(data)
 
     except:
         print("losa poruka")
@@ -201,6 +204,9 @@ def handle_gdht(data):
         socketio.emit("GDHT-hum", { "value": value })
         # set_text(f"H-{value}")
 
+def handle_b4sd(data):
+    value = data["value"]
+    socketio.emit("B4SD", { "value": value })
     
 def write_sensor_to_influx(data):
     write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)

@@ -8,6 +8,7 @@ from components.button import run_button
 from components.led import run_led
 from components.buzz import run_buzz
 from components.keypad import run_keypad
+from components.b4sd import run_b4sd
 import time
 
 # try:
@@ -60,10 +61,11 @@ if __name__ == "__main__":
     rpir1_settings = settings['RPIR1']
     rpir2_settings = settings['RPIR2']
     ds1_settings = settings['DS1']
+    b4sd_settings = settings['B4SD']
 
     dl_settings = settings['DL']
 
-    run_dht(gdht_settings, threads, stop_event)
+    # run_dht(gdht_settings, threads, stop_event)
     # run_dht(rdht1_settings, threads, stop_event)
     # run_dht(rdht2_settings, threads, stop_event)
     #
@@ -74,6 +76,7 @@ if __name__ == "__main__":
     # run_pir(rpir2_settings, dl_settings, threads, stop_event, rpir2_event)
 
     # run_button(ds1_settings, threads, stop_event, sensor_event)
+    run_b4sd(b4sd_settings, threads, stop_event, sensor_event)
 
     menu(settings)
     raise KeyboardInterrupt
