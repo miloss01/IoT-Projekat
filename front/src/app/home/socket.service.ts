@@ -50,4 +50,16 @@ export class SocketService {
   get_DB() {
     return this.socket.fromEvent('DB').pipe(map((data: any) => data))
   }
+  get_RPIR1() {
+    return this.socket.fromEvent('RPIR1').pipe(map((data: any) => data))
+  }
+  get_RPIR2() {
+    return this.socket.fromEvent('RPIR2').pipe(map((data: any) => data))
+  }
+  get_RPIR3() {
+    return this.socket.fromEvent('RPIR3').pipe(map((data: any) => data))
+  }
+  get_RPIR4() {
+    return this.socket.fromEvent('RPIR4').pipe(map((data: any) => data))
+  }
 }

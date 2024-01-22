@@ -97,6 +97,8 @@ def save_to_db(data):
                 handle_ds(data)
             if sensor == "DMS":
                 handle_dms(data)
+            if sensor in ["RPIR1", "RPIR2", "RPIR3", "RPIR4"]:
+                handle_rpir(data)
 
     except:
         print("losa poruka")
@@ -167,6 +169,25 @@ def handle_dms(data):
         write_alarm_to_influx({ "value": 0 })
         change_buzz(False, True)
         socketio.emit("DB", { "value": 0 })
+
+def handle_rpir(data):
+    value = data["value"]
+    name = data["name"]
+    global alarm
+    global settings
+    global persons
+
+    if alarm == False and value == 1 and persons == 0:
+        print("u alaram")
+        alarm = True
+        change_buzz(True, False)
+        socketio.emit("DB", { "value": 1 })
+        run_buzz(settings["DB"])
+        # treba da se doda za BB
+
+        socketio.emit(name, { "value": value })
+        socketio.emit("alarm", { "value": alarm })
+        write_alarm_to_influx({ "value": 1 })
     
 def write_sensor_to_influx(data):
     write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)

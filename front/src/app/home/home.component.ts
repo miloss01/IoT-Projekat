@@ -22,6 +22,10 @@ export class HomeComponent implements OnInit {
   ds1_value: number = 0
   ds2_value: number = 0
   db_value: number = 0
+  rpir1_value: number = 0
+  rpir2_value: number = 0
+  rpir3_value: number = 0
+  rpir4_value: number = 0
 
   ngOnInit(): void {
     this.socketService.getMessage().subscribe(message => {
@@ -69,6 +73,26 @@ export class HomeComponent implements OnInit {
     this.socketService.get_DB().subscribe(message => {
       console.log(message)
       this.db_value = message["value"]
+    })
+
+    this.socketService.get_RPIR1().subscribe(message => {
+      console.log(message)
+      this.rpir1_value = message["value"]
+    })
+
+    this.socketService.get_RPIR2().subscribe(message => {
+      console.log(message)
+      this.rpir2_value = message["value"]
+    })
+
+    this.socketService.get_RPIR3().subscribe(message => {
+      console.log(message)
+      this.rpir3_value = message["value"]
+    })
+
+    this.socketService.get_RPIR4().subscribe(message => {
+      console.log(message)
+      this.rpir4_value = message["value"]
     })
   }
 

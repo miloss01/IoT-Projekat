@@ -57,7 +57,8 @@ def pir_callback(detected, settings, led_settings, event, publish_event):
     publish_event.set()
 
   if detected:
-    l.run_led(led_settings)
+    if settings["name"] == "DPIR1":
+      l.run_led(led_settings)
     event.set()
   else:
     event.clear()

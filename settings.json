@@ -30,7 +30,7 @@
     },
     "RPIR1": {
         "simulated": true,
-        "delay": 2,
+        "delay": 5,
         "pin": 18,
         "name": "RPIR1",
         "pi": 1
