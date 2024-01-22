@@ -5,7 +5,10 @@ import paho.mqtt.client as mqtt
 from flask_cors import CORS, cross_origin
 from flask_socketio import SocketIO
 import json
-from components.led import run_led
+import threading
+import time
+from components.buzz import change_buzz, run_buzz
+from settings import load_settings
 
 
 app = Flask(__name__)
@@ -42,7 +45,7 @@ def on_connect(client, userdata, flags, rc):
     mqtt_client.subscribe("Buzz")
     mqtt_client.subscribe("PIR")
     mqtt_client.subscribe("UDS")
-    mqtt_client.subscribe("DS1")
+    mqtt_client.subscribe("DS")
     mqtt_client.subscribe("DMS")
     print("connected")
 
@@ -51,27 +54,54 @@ mqtt_client.on_message = lambda client, userdata, msg: save_to_db(json.loads(msg
 
 dus1_values = []
 persons = 0
+alarm = False
+PIN = "1234"
+active = False
+APIN = "1234"
+
+settings = load_settings()
+
+def activate():
+    time.sleep(6)
+    global active
+    active = True
+    socketio.emit('active', { "value": active })
 
 def save_to_db(data):
     print(data)
     try:
         write_sensor_to_influx(data)
         sensor = data["name"]
-
-        if sensor == "DL":
-            handle_DL(data)
-
-        if sensor == "DPIR1":
-            handle_DPIR1(data)
-
-        if sensor == "DUS1":
-            handle_dus1(data)
+        global active
+        print(f"activeee {active}")
+        if active == False and sensor != "DMS":
+            return
+        elif active == False and sensor == "DMS":
+            pin = data["value"]
+            
+            if pin != APIN:
+                return
+            else:
+                active = True
+                active_thread = threading.Thread(target=activate)
+                active_thread.start()
+        else:
+            print(f"uso, {active}, {sensor}")
+            if sensor == "DL":
+                handle_DL(data)
+            if sensor == "DPIR1":
+                handle_DPIR1(data)
+            if sensor == "DUS1":
+                handle_dus1(data)
+            if sensor == "DS1" or sensor == "DS2":
+                handle_ds(data)
+            if sensor == "DMS":
+                handle_dms(data)
 
     except:
         print("losa poruka")
 
 def handle_DPIR1(data):
-    socketio.emit('DPIR1', { "value": data["value"] })
 
     if data["value"] == 0:
         return
@@ -92,6 +122,7 @@ def handle_DPIR1(data):
     if desc:
         persons -= 1
 
+    socketio.emit('DPIR1', { "value": data["value"] })
     socketio.emit('persons', { "value": persons })
 
 def handle_DL(data):
@@ -106,7 +137,36 @@ def handle_dus1(data):
     else:
         dus1_values.append(value)
     
-    socketio.emit('DUS1', { "value": data["value"] })
+    socketio.emit('DUS1', { "value": value })
+
+def handle_ds(data):
+    value = data["value"]
+    name = data["name"]
+    global alarm
+    global settings
+
+    if value > 4.5 and alarm == False:
+        alarm = True
+        change_buzz(True, False)
+        socketio.emit("DB", { "value": 1 })
+        print("POSLAO")
+        run_buzz(settings["DB"])
+        # treba da se doda za BB
+
+        socketio.emit(name, { "value": value })
+        socketio.emit("alarm", { "value": alarm })
+        write_alarm_to_influx({ "value": 1 })
+
+def handle_dms(data):
+    pin = data["value"]
+    global alarm
+
+    if pin == PIN:
+        alarm = False
+        socketio.emit("alarm", { "value": alarm })
+        write_alarm_to_influx({ "value": 0 })
+        change_buzz(False, True)
+        socketio.emit("DB", { "value": 0 })
     
 def write_sensor_to_influx(data):
     write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)
@@ -119,15 +179,13 @@ def write_sensor_to_influx(data):
     )
     write_api.write(bucket=bucket, org=org, record=point)
 
-# Route to store dummy data
-@app.route('/store_data', methods=['POST'])
-def store_data():
-    try:
-        data = request.get_json()
-        store_data(data)
-        return jsonify({"status": "success"})
-    except Exception as e:
-        return jsonify({"status": "error", "message": str(e)})
+def write_alarm_to_influx(data):
+    write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)
+    point = (
+        Point("alarm")
+        .field("measurement", data["value"])
+    )
+    write_api.write(bucket=bucket, org=org, record=point)
     
 def handle_influx_query(query):
     try:
@@ -153,6 +211,38 @@ def retrieve_simple_data():
 @app.route('/proba', methods=['GET'])
 def proba():
     socketio.emit('probaSaServera', {"kljuc": "podaci"})
+    return jsonify({"status": "success"})
+
+@app.route('/alarm_pin', methods=['POST'])
+def alarm_pin():
+    request_data = request.get_json()
+    pin = request_data["pin"]
+
+    global alarm
+    global active
+
+    if pin == PIN:
+        alarm = False
+        active = False
+        socketio.emit("alarm", { "value": alarm })
+        socketio.emit("active", { "value": active })
+        write_alarm_to_influx({ "value": 0 })
+        change_buzz(False, True)
+        socketio.emit("DB", { "value": 0 })
+
+    return jsonify({"status": "success"})
+
+@app.route('/activate_pin', methods=['POST'])
+def activate_pin():
+    request_data = request.get_json()
+    pin = request_data["pin"]
+
+    global active
+
+    if pin == APIN:
+        active = True
+        socketio.emit("active", { "value": active })
+
     return jsonify({"status": "success"})
 
 

@@ -8,7 +8,7 @@ from . import constants as c
 
 dht_batch = []
 publish_data_counter = 0
-publish_data_limit = 5
+publish_data_limit = 1
 counter_lock = threading.Lock()
 
 time_pressed = 0
@@ -16,7 +16,7 @@ time_pressed = 0
 def generate_values(initial_detection = False):
   detection = initial_detection
   while True:
-    detection = random.randint(1, 6)
+    detection = random.randint(1, 10)
     yield detection
 
 
@@ -52,7 +52,7 @@ def sensor_callback(sensor_hold_value, settings, event, publish_event):
   }
 
   with counter_lock:
-    dht_batch.append(('DS1', json.dumps(temp_payload), 0, True))
+    dht_batch.append(('DS', json.dumps(temp_payload), 0, True))
     publish_data_counter += 1
 
   if publish_data_counter >= publish_data_limit:
@@ -63,7 +63,10 @@ def sensor_callback(sensor_hold_value, settings, event, publish_event):
 def run_sensor_simulator(callback, stop_event, settings, event, publish_event):
   for d in generate_values():
     time.sleep(settings["delay"])
-    callback(d, settings, event, publish_event)
+    if d >= 5:
+      callback(d, settings, event, publish_event)
+    else:
+      callback(0, settings, event, publish_event)
     if event.is_set():
       print("Room sensor detection event trigger.")
     if stop_event.is_set():
@@ -76,9 +79,12 @@ def button_check_release(callback, settings, event, publish_event):
   #     if GPIO.input(settings["port_button"]) == GPIO.HIGH:
   #       current_time = time.time()
   #       duration = current_time - pressed_at
-  #       callback(duration, settings, event, publish_event)
+  #       if duration > 4.5: # proveri da li moze ovako
+  #         callback(duration, settings, event, publish_event)
   #       # print(f"Button held for {duration:.2f} seconds")
   #       return
+  #     else:
+  #       callback(0, settings, event, publish_event)
   #     time.sleep(1)  # Add a small delay to avoid excessive checking
 
   # except KeyboardInterrupt:

@@ -6,6 +6,9 @@ import paho.mqtt.publish as publish
 from . import constants as c
 # import RPi.GPIO as GPIO
 
+should_buzz = False
+should_stop = False
+
 dht_batch = []
 publish_data_counter = 0
 publish_data_limit = 5
@@ -32,6 +35,16 @@ publisher_thread.start()
 def run_buzz_simulator(settings):
   t = time.localtime()
 
+  global should_buzz
+  while should_buzz:
+
+    global should_stop
+    if should_stop:
+      break
+
+    print(f"Code: {settings['name']}, Timestamp: {time.strftime('%H:%M:%S', t)}, Buzzzzz")
+    time.sleep(3)
+
   global publish_data_counter, publish_data_limit
 
   temp_payload = {
@@ -49,7 +62,6 @@ def run_buzz_simulator(settings):
   if publish_data_counter >= publish_data_limit:
     publish_event.set()
 
-  print(f"Code: {settings['name']}, Timestamp: {time.strftime('%H:%M:%S', t)}, Buzzzzz")
 
 def buzz(pitch, duration, buzzer_pin):
   period = 1.0 / pitch
@@ -65,9 +77,17 @@ def buzz(pitch, duration, buzzer_pin):
 def run_buzz_real(settings):
   t = time.localtime()
 
-  pitch = 440
-  duration = 2 # onoliko sekundi koliko hocemo da pisti
-  buzz(pitch, duration, settings["pin"])
+  global should_buzz
+  while should_buzz:
+
+    global should_stop
+    if should_stop:
+      break
+
+    pitch = 440
+    duration = 1 # onoliko sekundi koliko hocemo da pisti
+    buzz(pitch, duration, settings["pin"])
+    time.sleep(1)
 
   global publish_data_counter, publish_data_limit
 
@@ -90,8 +110,18 @@ def run_buzz_real(settings):
 
 def run_buzz(settings):
   if settings['simulated']:
-    run_buzz_simulator(settings)
+    sensor_thread = threading.Thread(target= run_buzz_simulator, args=(settings,))
+    sensor_thread.start()
+    print(f"{settings['name']} simulator started.")
   else:
     # GPIO.setmode(GPIO.BCM)
     # GPIO.setup(settings['pin'], GPIO.OUT)
-    run_buzz_real(settings)
+    sensor_thread = threading.Thread(target= run_buzz_real, args=(settings,))
+    sensor_thread.start()
+    print(f"{settings['name']} real started.")
+
+def change_buzz(buzz, stop):
+  global should_buzz
+  should_buzz = buzz
+  global should_stop
+  should_stop = stop

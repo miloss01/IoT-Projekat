@@ -48,7 +48,7 @@
         "port_button": 18,
         "pi": 1,
         "pin": 18,
-        "delay": 2
+        "delay": 7
     },
     "DL": {
         "simulated": true,
