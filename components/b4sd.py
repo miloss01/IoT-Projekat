@@ -12,8 +12,6 @@ publish_data_counter = 0
 publish_data_limit = 1
 counter_lock = threading.Lock()
 
-time_pressed = 0
-
 def generate_values():
   while True:
     now = datetime.now()

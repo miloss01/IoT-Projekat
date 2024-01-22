@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
   alarm: boolean = false
   active: boolean = false
   pin: string = ""
+  clock: boolean = false
 
   dl_value: string = ""
   dpir1_value: number = 0
@@ -29,6 +30,7 @@ export class HomeComponent implements OnInit {
   gdht_temp_value: number = 0
   gdht_hum_value: number = 0
   b4sd_value: string = ""
+  b4sd_placeholder: string = ""
 
   ngOnInit(): void {
     this.socketService.getMessage().subscribe(message => {
@@ -111,7 +113,11 @@ export class HomeComponent implements OnInit {
     this.socketService.get_B4SD().subscribe(message => {
       console.log(message)
       this.b4sd_value = message["value"]
+      this.b4sd_placeholder = message["value"]
     })
+    setInterval(() => {
+      this.blink_b4sd();
+    }, 500);
   }
 
   send_alarm_pin() {
@@ -127,7 +133,15 @@ export class HomeComponent implements OnInit {
   }
 
   probaNaServer() {
-    this.socket.emit("probaNaServer", {"naserver": 123})
+    // this.socket.emit("probaNaServer", {"naserver": 123})
+    this.clock = !this.clock
+  }
+
+  blink_b4sd() {
+    if (this.clock)
+      this.b4sd_value = this.b4sd_value === '' ? this.b4sd_placeholder : ''
+    else
+      this.b4sd_value = this.b4sd_placeholder
   }
 
 }
