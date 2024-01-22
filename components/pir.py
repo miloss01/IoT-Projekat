@@ -4,7 +4,8 @@ import random
 import json
 import paho.mqtt.publish as publish
 from . import constants as c
-import RPi.GPIO as GPIO
+from . import led as l
+# import RPi.GPIO as GPIO
 
 def generate_values(initial_detection = False):
   detection = initial_detection
@@ -14,7 +15,7 @@ def generate_values(initial_detection = False):
 
 dht_batch = []
 publish_data_counter = 0
-publish_data_limit = 5
+publish_data_limit = 1
 counter_lock = threading.Lock()
 
 def publisher_task(event, dht_batch):
@@ -35,7 +36,7 @@ publisher_thread = threading.Thread(target=publisher_task, args=(publish_event, 
 publisher_thread.daemon = True
 publisher_thread.start()
 
-def pir_callback(detected, settings, event, publish_event):
+def pir_callback(detected, settings, led_settings, event, publish_event):
   t = time.localtime()
 
   global publish_data_counter, publish_data_limit
@@ -56,30 +57,31 @@ def pir_callback(detected, settings, event, publish_event):
     publish_event.set()
 
   if detected:
+    l.run_led(led_settings)
     event.set()
   else:
     event.clear()
 
   print(f"Code: {settings['name']}, Timestamp: {time.strftime('%H:%M:%S', t)}, Motion detected: {detected}")
 
-def run_pir_simulator(callback, stop_event, settings, event, publish_event):
+def run_pir_simulator(callback, stop_event, settings, led_settings, event, publish_event):
   for d in generate_values():
     time.sleep(settings["delay"])
-    callback(d, settings, event, publish_event)
+    callback(d, settings, led_settings, event, publish_event)
     if event.is_set():
       print("Motion detection event trigger.")
     if stop_event.is_set():
       break
 
-def run_pir(settings, threads, stop_event, event):
+def run_pir(settings, led_settings, threads, stop_event, event):
   if settings['simulated']:
-    pir_thread = threading.Thread(target = run_pir_simulator, args=(pir_callback, stop_event, settings, event, publish_event))
+    pir_thread = threading.Thread(target = run_pir_simulator, args=(pir_callback, stop_event, settings, led_settings, event, publish_event))
     pir_thread.start()
     threads.append(pir_thread)
     print(f"{settings['name']} simulator started.")
   else:
     # GPIO.setmode(GPIO.BCM)
     # GPIO.setup(settings["pin"], GPIO.IN)
-    # GPIO.add_event_detect(settings["pin"], GPIO.RISING, callback=lambda x: pir_callback(True, settings, event, publish_event))
-    # # GPIO.add_event_detect(settings["pin"], GPIO.FALLING, callback=lambda x: pir_callback(False, settings, event, publish_event))
+    # GPIO.add_event_detect(settings["pin"], GPIO.RISING, callback=lambda x: pir_callback(True, settings, led_settings, event, publish_event))
+    # # GPIO.add_event_detect(settings["pin"], GPIO.FALLING, callback=lambda x: pir_callback(False, settings, led_settings, event, publish_event))
     print(f"{settings['name']} real started.")

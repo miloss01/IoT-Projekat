@@ -8,7 +8,7 @@ from . import constants as c
 
 dht_batch = []
 publish_data_counter = 0
-publish_data_limit = 5
+publish_data_limit = 1
 counter_lock = threading.Lock()
 
 def publisher_task(event, dht_batch):
@@ -29,18 +29,8 @@ publisher_thread = threading.Thread(target=publisher_task, args=(publish_event, 
 publisher_thread.daemon = True
 publisher_thread.start()
 
-working = False
-
 def run_led_simulator(settings):
   t = time.localtime()
-
-  global working
-  working = not working
-
-  if working:
-    on = "on"
-  else:
-    on = "off"
 
   global publish_data_counter, publish_data_limit
 
@@ -49,7 +39,7 @@ def run_led_simulator(settings):
       "simulated": settings['simulated'],
       "pi": settings["pi"],
       "name": settings["name"],
-      "value": on
+      "value": "on"
   }
 
   with counter_lock:
@@ -59,21 +49,24 @@ def run_led_simulator(settings):
   if publish_data_counter >= publish_data_limit:
     publish_event.set()
 
-  print(f"Code: {settings['name']}, Timestamp: {time.strftime('%H:%M:%S', t)}, Door light (LED) is turned {on}")
+  print(f"Code: {settings['name']}, Timestamp: {time.strftime('%H:%M:%S', t)}, is turned on")
+
+  time.sleep(settings["duration"])
+
+  temp_payload["value"] = "off"
+
+  with counter_lock:
+    dht_batch.append(('LED', json.dumps(temp_payload), 0, True))
+    publish_data_counter += 1
+
+  if publish_data_counter >= publish_data_limit:
+    publish_event.set()
+
+  print(f"Code: {settings['name']}, Timestamp: {time.strftime('%H:%M:%S', t)}, is turned off")
 
 def run_led_real(settings):
   t = time.localtime()
 
-  global working
-  working = not working
-
-  if working:
-    on = "on"
-    # GPIO.output(settings["pin"], GPIO.HIGH)
-  else:
-    on = "off"
-    # GPIO.output(settings["pin"], GPIO.LOW)
-
   global publish_data_counter, publish_data_limit
 
   temp_payload = {
@@ -81,7 +74,7 @@ def run_led_real(settings):
       "simulated": settings['simulated'],
       "pi": settings["pi"],
       "name": settings["name"],
-      "value": on
+      "value": "on"
   }
 
   with counter_lock:
@@ -91,7 +84,11 @@ def run_led_real(settings):
   if publish_data_counter >= publish_data_limit:
     publish_event.set()
 
-  print(f"Code: {settings['name']}, Timestamp: {time.strftime('%H:%M:%S', t)}, Door light (LED) is turned {on}")
+  # GPIO.output(settings["pin"], GPIO.HIGH)
+  print(f"Code: {settings['name']}, Timestamp: {time.strftime('%H:%M:%S', t)}, is turned on")
+  time.sleep(settings["duration"])
+  # GPIO.output(settings["pin"], GPIO.LOW)
+  print(f"Code: {settings['name']}, Timestamp: {time.strftime('%H:%M:%S', t)}, is turned off")
 
 def run_led(settings):
   if settings['simulated']:

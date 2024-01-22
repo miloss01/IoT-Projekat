@@ -14,7 +14,7 @@
         "name": "RDHT2"
     },
     "DUS1": {
-        "simulated": false,
+        "simulated": true,
         "delay": 2,
         "pi": 1,
         "name": "DUS1",
@@ -22,8 +22,8 @@
         "echo": 24
     },
     "DPIR1": {
-        "simulated": false,
-        "delay": 2,
+        "simulated": true,
+        "delay": 7,
         "pin": 23,
         "name": "DPIR1",
         "pi": 1
@@ -43,7 +43,7 @@
         "pi": 1
     },
     "DS1": {
-        "simulated": false,
+        "simulated": true,
         "name": "DS1",
         "port_button": 18,
         "pi": 1,
@@ -54,10 +54,11 @@
         "simulated": true,
         "name": "DL",
         "pi": 1,
-        "pin": 18
+        "pin": 18,
+        "duration": 3
     },
     "DB": {
-        "simulated": false,
+        "simulated": true,
         "name": "DB",
         "pi": 1,
         "pin": 18,

@@ -8,7 +8,7 @@ from . import constants as c
 
 dht_batch = []
 publish_data_counter = 0
-publish_data_limit = 5
+publish_data_limit = 1
 counter_lock = threading.Lock()
 
 def publisher_task(event, dht_batch):
@@ -61,7 +61,7 @@ publisher_thread.start()
 def generate_values(initial_distance = 25):
   distance = initial_distance
   while True:
-    distance += random.randint(-10, 10)
+    distance += random.randint(0, 10)
     yield distance
 
 def uds_callback(distance, settings):

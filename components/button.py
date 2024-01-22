@@ -4,7 +4,7 @@ import json
 import paho.mqtt.publish as publish
 import threading
 from . import constants as c
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 
 dht_batch = []
 publish_data_counter = 0
@@ -71,18 +71,18 @@ def run_sensor_simulator(callback, stop_event, settings, event, publish_event):
 
 def button_check_release(callback, settings, event, publish_event):
   pressed_at = time.time()
-  try:
-    while True:
-      if GPIO.input(settings["port_button"]) == GPIO.HIGH:
-        current_time = time.time()
-        duration = current_time - pressed_at
-        callback(duration, settings, event, publish_event)
-        # print(f"Button held for {duration:.2f} seconds")
-        return
-      time.sleep(1)  # Add a small delay to avoid excessive checking
+  # try:
+  #   while True:
+  #     if GPIO.input(settings["port_button"]) == GPIO.HIGH:
+  #       current_time = time.time()
+  #       duration = current_time - pressed_at
+  #       callback(duration, settings, event, publish_event)
+  #       # print(f"Button held for {duration:.2f} seconds")
+  #       return
+  #     time.sleep(1)  # Add a small delay to avoid excessive checking
 
-  except KeyboardInterrupt:
-    GPIO.cleanup()
+  # except KeyboardInterrupt:
+  #   GPIO.cleanup()
 
 def button_pressed(callback, settings, event, publish_event):
   release_thread = threading.Thread(target=button_check_release, args=(callback, settings, event, publish_event))
@@ -91,9 +91,9 @@ def button_pressed(callback, settings, event, publish_event):
 
 def run_button_real(callback, stop_event, settings, event, publish_event):
   port_button = settings["port_button"]
-  GPIO.setmode(GPIO.BCM)
-  GPIO.setup(port_button, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-  GPIO.add_event_detect(port_button, GPIO.FALLING, callback = lambda x: button_pressed(callback, settings, event, publish_event), bouncetime = 500)
+  # GPIO.setmode(GPIO.BCM)
+  # GPIO.setup(port_button, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+  # GPIO.add_event_detect(port_button, GPIO.FALLING, callback = lambda x: button_pressed(callback, settings, event, publish_event), bouncetime = 500)
 
 def run_button(settings, threads, stop_event, event):
   if settings['simulated']:
