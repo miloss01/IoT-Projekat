@@ -2,7 +2,7 @@
     "RDHT1": {
         "simulated": true,
         "pin": 17,
-        "delay": 2,
+        "delay": 3,
         "pi": 1,
         "name": "RDHT1"
     },
@@ -12,6 +12,13 @@
         "delay": 3,
         "pi": 1,
         "name": "RDHT2"
+    },
+    "GDHT": {
+        "simulated": true,
+        "pin": 17,
+        "delay": 3,
+        "pi": 1,
+        "name": "GDHT"
     },
     "DUS1": {
         "simulated": true,

@@ -54,6 +54,7 @@ if __name__ == "__main__":
   try:
     rdht1_settings = settings['RDHT1']
     rdht2_settings = settings['RDHT2']
+    gdht_settings = settings['GDHT']
     dus1_settings = settings['DUS1']
     dpir1_settings = settings['DPIR1']
     rpir1_settings = settings['RPIR1']
@@ -62,13 +63,14 @@ if __name__ == "__main__":
 
     dl_settings = settings['DL']
 
+    run_dht(gdht_settings, threads, stop_event)
     # run_dht(rdht1_settings, threads, stop_event)
     # run_dht(rdht2_settings, threads, stop_event)
     #
     # run_uds(dus1_settings, threads, stop_event)
     #
     # run_pir(dpir1_settings, dl_settings, threads, stop_event, dpir1_event)
-    run_pir(rpir1_settings, dl_settings, threads, stop_event, rpir1_event)
+    # run_pir(rpir1_settings, dl_settings, threads, stop_event, rpir1_event)
     # run_pir(rpir2_settings, dl_settings, threads, stop_event, rpir2_event)
 
     # run_button(ds1_settings, threads, stop_event, sensor_event)

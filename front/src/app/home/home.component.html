@@ -1,4 +1,3 @@
-<p>home works!</p>
 
 <h3>ACTIVE: {{active}}</h3>
 <h3>PERSONS: {{persons}}</h3>
@@ -14,6 +13,8 @@
 <p>(RPIR2) Room PIR 2: {{rpir2_value}}</p>
 <p>(RPIR3) Room PIR 3: {{rpir3_value}}</p>
 <p>(RPIR4) Room PIR 4: {{rpir4_value}}</p>
+<p>(GDHT) Garage DHT: Temp-{{gdht_temp_value}}, Hum-{{gdht_hum_value}}</p>
+<p>(GLCD) Garage LCD: T-{{gdht_temp_value}} H-{{gdht_hum_value}}</p>
 
 <input [(ngModel)]="pin" />
 <button (click)="send_alarm_pin()">Send alarm pin</button>

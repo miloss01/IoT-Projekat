@@ -8,6 +8,7 @@ import json
 import threading
 import time
 from components.buzz import change_buzz, run_buzz
+from components.LCD1602 import set_text, loop
 from settings import load_settings
 
 
@@ -86,7 +87,6 @@ def save_to_db(data):
                 active_thread = threading.Thread(target=activate)
                 active_thread.start()
         else:
-            print(f"uso, {active}, {sensor}")
             if sensor == "DL":
                 handle_DL(data)
             if sensor == "DPIR1":
@@ -99,6 +99,8 @@ def save_to_db(data):
                 handle_dms(data)
             if sensor in ["RPIR1", "RPIR2", "RPIR3", "RPIR4"]:
                 handle_rpir(data)
+            if sensor == "GDHT":
+                handle_gdht(data)
 
     except:
         print("losa poruka")
@@ -188,6 +190,17 @@ def handle_rpir(data):
         socketio.emit(name, { "value": value })
         socketio.emit("alarm", { "value": alarm })
         write_alarm_to_influx({ "value": 1 })
+
+def handle_gdht(data):
+    value = data["value"]
+    measurement = data["measurement"]
+    if measurement == "Temperature":
+        socketio.emit("GDHT-temp", { "value": value })
+        # set_text(f"T-{value}") # za dodavanje na pravi LCD. ne znam da li radi
+    if measurement == "Humidity":
+        socketio.emit("GDHT-hum", { "value": value })
+        # set_text(f"H-{value}")
+
     
 def write_sensor_to_influx(data):
     write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)

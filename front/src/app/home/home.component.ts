@@ -26,6 +26,8 @@ export class HomeComponent implements OnInit {
   rpir2_value: number = 0
   rpir3_value: number = 0
   rpir4_value: number = 0
+  gdht_temp_value: number = 0
+  gdht_hum_value: number = 0
 
   ngOnInit(): void {
     this.socketService.getMessage().subscribe(message => {
@@ -93,6 +95,16 @@ export class HomeComponent implements OnInit {
     this.socketService.get_RPIR4().subscribe(message => {
       console.log(message)
       this.rpir4_value = message["value"]
+    })
+
+    this.socketService.get_GDHT_temp().subscribe(message => {
+      console.log(message)
+      this.gdht_temp_value = message["value"]
+    })
+
+    this.socketService.get_GDHT_hum().subscribe(message => {
+      console.log(message)
+      this.gdht_hum_value = message["value"]
     })
   }
 

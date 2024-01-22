@@ -62,4 +62,10 @@ export class SocketService {
   get_RPIR4() {
     return this.socket.fromEvent('RPIR4').pipe(map((data: any) => data))
   }
+  get_GDHT_temp() {
+    return this.socket.fromEvent('GDHT-temp').pipe(map((data: any) => data))
+  }
+  get_GDHT_hum() {
+    return this.socket.fromEvent('GDHT-hum').pipe(map((data: any) => data))
+  }
 }
