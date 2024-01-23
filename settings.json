@@ -13,13 +13,6 @@
         "pi": 1,
         "name": "RDHT2"
     },
-    "GDHT": {
-        "simulated": true,
-        "pin": 17,
-        "delay": 3,
-        "pi": 1,
-        "name": "GDHT"
-    },
     "DUS1": {
         "simulated": true,
         "delay": 2,
@@ -85,10 +78,117 @@
         "R3": 20,
         "R4": 21
     },
+
+
+
+
+
+
+    
+    "GDHT": {
+        "simulated": true,
+        "pin": 17,
+        "delay": 3,
+        "pi": 2,
+        "name": "GDHT"
+    },
+    "DS2": {
+        "simulated": true,
+        "name": "DS2",
+        "port_button": 18,
+        "pi": 2,
+        "pin": 18,
+        "delay": 7
+    },
+    "DUS2": {
+        "simulated": true,
+        "delay": 2,
+        "pi": 2,
+        "name": "DUS2",
+        "trig": 23,
+        "echo": 24
+    },
+    "DPIR2": {
+        "simulated": true,
+        "delay": 7,
+        "pin": 23,
+        "name": "DPIR2",
+        "pi": 2
+    },
+    "GLCD": {
+        "simulated": true,
+        "delay": 7,
+        "pin": 23,
+        "name": "GLCD",
+        "pi": 2
+    },
+    "GSG": {
+        "simulated": true,
+        "delay": 7,
+        "pin": 23,
+        "name": "GSG",
+        "pi": 2
+    },
+    "RPIR3": {
+        "simulated": true,
+        "delay": 2,
+        "pin": 18,
+        "name": "RPIR3",
+        "pi": 2
+    },
+    "RDHT3": {
+        "simulated": true,
+        "pin": 17,
+        "delay": 3,
+        "pi": 2,
+        "name": "RDHT3"
+    },
+
+
+
+
+
+
+    
     "B4SD": {
         "simulated": true,
         "name": "B4SD",
-        "pi": 1,
+        "pi": 3,
         "delay": 4
+    },
+    "RPIR4": {
+        "simulated": true,
+        "delay": 2,
+        "pin": 18,
+        "name": "RPIR4",
+        "pi": 3
+    },
+    "RDHT4": {
+        "simulated": true,
+        "pin": 17,
+        "delay": 3,
+        "pi": 3,
+        "name": "RDHT4"
+    },
+    "BB": {
+        "simulated": true,
+        "name": "BB",
+        "pi": 3,
+        "pin": 18,
+        "duration": 2
+    },
+    "BIR": {
+        "simulated": true,
+        "name": "BIR",
+        "pi": 3,
+        "pin": 18,
+        "duration": 2
+    },
+    "BRGB": {
+        "simulated": true,
+        "name": "BRGB",
+        "pi": 3,
+        "pin": 18,
+        "duration": 2
     }
 }

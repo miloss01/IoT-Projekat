@@ -61,7 +61,7 @@ publisher_thread.start()
 def generate_values(initial_distance = 25):
   distance = initial_distance
   while True:
-    distance += random.randint(-10, 10)
+    distance += random.randint(-4, 4)
     yield distance
 
 def uds_callback(distance, settings):

@@ -2,6 +2,7 @@
 <h3>ACTIVE: {{active}}</h3>
 <h3>PERSONS: {{persons}}</h3>
 <h3>ALARM: {{alarm}}</h3>
+<h3>CLOCK: {{clock}}</h3>
 
 <p>(DL) Door Light: {{dl_value}}</p>
 <p>(DPIR1) Door PIR 1: {{dpir1_value}}</p>
@@ -9,6 +10,7 @@
 <p>(DS1) Door Sensor 1: {{ds1_value}}</p>
 <p>(DS2) Door Sensor 2: {{ds2_value}}</p>
 <p>(DB) Door Buzzer: {{db_value}}</p>
+<p>(BB) Bedroom Buzzer: {{bb_value}}</p>
 <p>(RPIR1) Room PIR 1: {{rpir1_value}}</p>
 <p>(RPIR2) Room PIR 2: {{rpir2_value}}</p>
 <p>(RPIR3) Room PIR 3: {{rpir3_value}}</p>
@@ -20,6 +22,10 @@
 <input [(ngModel)]="pin" />
 <button (click)="send_alarm_pin()">Send alarm pin</button>
 <button (click)="send_activate_pin()">Send activate pin</button>
+<br><br>
+<input [(ngModel)]="time" />
+<button (click)="send_clock()">Send clock</button>
+<button (click)="stop_clock()">Stop clock</button>
 
 <button (click)="probaNaServer()">asdads</button>
 

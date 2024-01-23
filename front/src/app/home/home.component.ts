@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   active: boolean = false
   pin: string = ""
   clock: boolean = false
+  time: string = ""
 
   dl_value: string = ""
   dpir1_value: number = 0
@@ -23,6 +24,7 @@ export class HomeComponent implements OnInit {
   ds1_value: number = 0
   ds2_value: number = 0
   db_value: number = 0
+  bb_value: number = 0
   rpir1_value: number = 0
   rpir2_value: number = 0
   rpir3_value: number = 0
@@ -48,6 +50,10 @@ export class HomeComponent implements OnInit {
     this.socketService.get_active().subscribe(message => {
       console.log(message)
       this.active = message["value"]
+    })
+    this.socketService.get_clock().subscribe(message => {
+      console.log(message)
+      this.clock = true
     })
 
     this.socketService.get_DL().subscribe(message => {
@@ -78,6 +84,11 @@ export class HomeComponent implements OnInit {
     this.socketService.get_DB().subscribe(message => {
       console.log(message)
       this.db_value = message["value"]
+    })
+
+    this.socketService.get_BB().subscribe(message => {
+      console.log(message)
+      this.bb_value = message["value"]
     })
 
     this.socketService.get_RPIR1().subscribe(message => {
@@ -129,6 +140,18 @@ export class HomeComponent implements OnInit {
   send_activate_pin() {
     this.socketService.send_activate_pin(this.pin).subscribe(data => {
       console.log("poslat activate pin")
+    })
+  }
+
+  send_clock() {
+    this.socketService.send_clock(this.time).subscribe(data => {
+      console.log("poslat time")
+    })
+  }
+
+  stop_clock() {
+    this.socketService.stop_clock().subscribe(data => {
+      this.clock = false
     })
   }
 

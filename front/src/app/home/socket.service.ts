@@ -31,6 +31,15 @@ export class SocketService {
   send_activate_pin(pin: string) {
     return this.http.post(this.flask_url + "/activate_pin", {"pin": pin})
   }
+  get_clock() {
+    return this.socket.fromEvent('clock').pipe(map((data: any) => data))
+  }
+  send_clock(time: string) {
+    return this.http.post(this.flask_url + "/clock_time", {"time": time})
+  }
+  stop_clock() {
+    return this.http.post(this.flask_url + "/stop_clock", {})
+  }
 
   get_DL() {
     return this.socket.fromEvent('DL').pipe(map((data: any) => data))
@@ -49,6 +58,9 @@ export class SocketService {
   }
   get_DB() {
     return this.socket.fromEvent('DB').pipe(map((data: any) => data))
+  }
+  get_BB() {
+    return this.socket.fromEvent('BB').pipe(map((data: any) => data))
   }
   get_RPIR1() {
     return this.socket.fromEvent('RPIR1').pipe(map((data: any) => data))

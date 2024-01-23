@@ -10,6 +10,7 @@ import time
 from components.buzz import change_buzz, run_buzz
 # from components.LCD1602 import set_text, loop
 from settings import load_settings
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -55,11 +56,15 @@ mqtt_client.on_connect = on_connect
 mqtt_client.on_message = lambda client, userdata, msg: save_to_db(json.loads(msg.payload.decode('utf-8')))
 
 dus1_values = []
+dus2_values = []
 persons = 0
 alarm = False
 PIN = "1234"
 active = False
 APIN = "1234"
+
+clock = None
+should_bb = 0
 
 settings = load_settings()
 
@@ -92,8 +97,12 @@ def save_to_db(data):
                 handle_DL(data)
             if sensor == "DPIR1":
                 handle_DPIR1(data)
+            if sensor == "DPIR2":
+                handle_DPIR2(data)
             if sensor == "DUS1":
                 handle_dus1(data)
+            if sensor == "DUS2":
+                handle_dus2(data)
             if sensor == "DS1" or sensor == "DS2":
                 handle_ds(data)
             if sensor == "DMS":
@@ -132,6 +141,30 @@ def handle_DPIR1(data):
     socketio.emit('DPIR1', { "value": data["value"] })
     socketio.emit('persons', { "value": persons })
 
+def handle_DPIR2(data):
+
+    if data["value"] == 0:
+        return
+    
+    global dus2_values
+    global persons
+
+    last_three = dus2_values[-3:]
+    print(dus2_values)
+    print(last_three)
+
+    asc = all(last_three[i] < last_three[i + 1] for i in range(len(last_three) - 1))
+    desc = all(last_three[i] > last_three[i + 1] for i in range(len(last_three) - 1))
+
+    if asc:
+        print("POVECAOOOO")
+        persons += 1
+    if desc:
+        persons -= 1
+
+    socketio.emit('DPIR2', { "value": data["value"] })
+    socketio.emit('persons', { "value": persons })
+
 def handle_DL(data):
     socketio.emit('DL', { "value": data["value"] })
 
@@ -146,6 +179,17 @@ def handle_dus1(data):
     
     socketio.emit('DUS1', { "value": value })
 
+def handle_dus2(data):
+    value = data["value"]
+    global dus2_values
+
+    if len(dus2_values) == 0:
+        dus2_values = [value, value, value]
+    else:
+        dus2_values.append(value)
+    
+    socketio.emit('DUS2', { "value": value })
+
 def handle_ds(data):
     value = data["value"]
     name = data["name"]
@@ -156,9 +200,10 @@ def handle_ds(data):
         alarm = True
         change_buzz(True, False)
         socketio.emit("DB", { "value": 1 })
+        socketio.emit("BB", { "value": 1 })
         print("POSLAO")
         run_buzz(settings["DB"])
-        # treba da se doda za BB
+        run_buzz(settings["BB"])
 
         socketio.emit(name, { "value": value })
         socketio.emit("alarm", { "value": alarm })
@@ -282,6 +327,50 @@ def activate_pin():
     if pin == APIN:
         active = True
         socketio.emit("active", { "value": active })
+
+    return jsonify({"status": "success"})
+
+@app.route('/clock_time', methods=['POST'])
+def clock_time():
+    request_data = request.get_json()
+    clock_time = request_data["time"]
+    global clock
+
+    clock = datetime.strptime(clock_time, "%d:%m:%Y %H:%M:%S")
+    print(clock_time)
+    print(clock)
+
+    clock_thread = threading.Thread(target=clock_check)
+    clock_thread.start()
+
+    return jsonify({"status": "success"})
+
+def clock_check():
+    global clock
+    global should_bb
+
+    while clock != None:
+        now = datetime.now()
+        if now > clock:
+            should_bb += 1
+            print("proslo vreme")
+            socketio.emit("clock", {})
+            socketio.emit("BB", { "value": 1 })
+            if should_bb == 1:
+                change_buzz(True, False)
+                run_buzz(settings["BB"])
+        time.sleep(2)
+
+
+@app.route('/stop_clock', methods=['POST'])
+def stop_clock():
+    global clock
+    global should_bb
+    clock = None
+    should_bb = 0
+
+    change_buzz(False, True)
+    socketio.emit("BB", { "value": 0 })
 
     return jsonify({"status": "success"})
 
