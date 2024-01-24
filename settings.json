@@ -124,7 +124,7 @@
     },
     "GSG": {
         "simulated": true,
-        "delay": 7,
+        "delay": 3,
         "pin": 23,
         "name": "GSG",
         "pi": 2

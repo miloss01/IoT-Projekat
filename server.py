@@ -50,6 +50,7 @@ def on_connect(client, userdata, flags, rc):
     mqtt_client.subscribe("DS")
     mqtt_client.subscribe("DMS")
     mqtt_client.subscribe("B4SD")
+    mqtt_client.subscribe("GYRO")
     print("connected")
 
 mqtt_client.on_connect = on_connect
@@ -113,6 +114,8 @@ def save_to_db(data):
                 handle_gdht(data)
             if sensor == "B4SD":
                 handle_b4sd(data)
+            if sensor == "GSG":
+                handle_gsg(data)
 
     except:
         print("losa poruka")
@@ -252,6 +255,24 @@ def handle_gdht(data):
 def handle_b4sd(data):
     value = data["value"]
     socketio.emit("B4SD", { "value": value })
+
+def handle_gsg(data):
+    value = data["value"]
+    x, y, z = value.split(":")
+    global alarm
+
+    if (float(x) > 1.5 or float(y) > 1.5 or float(z) > 1.5) and alarm == False:
+        alarm = True
+        change_buzz(True, False)
+        socketio.emit("DB", { "value": 1 })
+        socketio.emit("BB", { "value": 1 })
+        run_buzz(settings["DB"])
+        run_buzz(settings["BB"])
+
+        socketio.emit("alarm", { "value": alarm })
+        write_alarm_to_influx({ "value": 1 })
+
+    socketio.emit("GSG", { "value": value })
     
 def write_sensor_to_influx(data):
     write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)

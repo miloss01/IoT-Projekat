@@ -9,6 +9,7 @@ from components.led import run_led
 from components.buzz import run_buzz
 from components.keypad import run_keypad
 from components.b4sd import run_b4sd
+from components.gyro import run_gyro
 import time
 
 # try:
@@ -50,6 +51,7 @@ if __name__ == "__main__":
   dpir2_event = threading.Event()
   rpir3_event = threading.Event()
   sensor_event = threading.Event()
+  gsg_event = threading.Event()
 
   try:
     gdht_settings = settings['GDHT']
@@ -58,17 +60,19 @@ if __name__ == "__main__":
     dpir2_settings = settings['DPIR2']
     rpir3_settings = settings['RPIR3']
     rdht3_settings = settings['RDHT3']
+    gsg_settings = settings['GSG']
     dl_settings = settings['DL']
 
-    run_dht(gdht_settings, threads, stop_event)
+    # run_dht(gdht_settings, threads, stop_event)
     # run_dht(rdht3_settings, threads, stop_event)
     
-    run_uds(dus2_settings, threads, stop_event)
+    # run_uds(dus2_settings, threads, stop_event)
     
-    run_pir(dpir2_settings, dl_settings, threads, stop_event, dpir2_event)
-    run_pir(rpir3_settings, dl_settings, threads, stop_event, rpir3_event)
+    # run_pir(dpir2_settings, dl_settings, threads, stop_event, dpir2_event)
+    # run_pir(rpir3_settings, dl_settings, threads, stop_event, rpir3_event)
 
-    run_button(ds2_settings, threads, stop_event, sensor_event)
+    # run_button(ds2_settings, threads, stop_event, sensor_event)
+    run_gyro(gsg_settings, threads, stop_event, gsg_event)
 
     menu(settings)
     raise KeyboardInterrupt

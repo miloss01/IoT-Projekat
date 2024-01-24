@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit {
   gdht_hum_value: number = 0
   b4sd_value: string = ""
   b4sd_placeholder: string = ""
+  gsg_value: string = ""
 
   ngOnInit(): void {
     this.socketService.getMessage().subscribe(message => {
@@ -129,6 +130,11 @@ export class HomeComponent implements OnInit {
     setInterval(() => {
       this.blink_b4sd();
     }, 500);
+
+    this.socketService.get_GSG().subscribe(message => {
+      console.log(message)
+      this.gsg_value = message["value"]
+    })
   }
 
   send_alarm_pin() {

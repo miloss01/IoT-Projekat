@@ -83,4 +83,7 @@ export class SocketService {
   get_B4SD() {
     return this.socket.fromEvent('B4SD').pipe(map((data: any) => data))
   }
+  get_GSG() {
+    return this.socket.fromEvent('GSG').pipe(map((data: any) => data))
+  }
 }
