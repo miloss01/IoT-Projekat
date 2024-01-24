@@ -116,6 +116,10 @@ def save_to_db(data):
                 handle_b4sd(data)
             if sensor == "GSG":
                 handle_gsg(data)
+            if sensor in ["RDHT1", "RDHT2", "RDHT3", "RDHT4"]:
+                hadnle_rdht(data)
+
+                # RDHT1, RDHT2, DUS2, DPIR2, RDHT3, RDHT4
 
     except:
         print("losa poruka")
@@ -138,7 +142,7 @@ def handle_DPIR1(data):
     if asc:
         print("POVECAOOOO")
         persons += 1
-    if desc:
+    if desc and persons != 0:
         persons -= 1
 
     socketio.emit('DPIR1', { "value": data["value"] })
@@ -162,7 +166,7 @@ def handle_DPIR2(data):
     if asc:
         print("POVECAOOOO")
         persons += 1
-    if desc:
+    if desc and persons != 0:
         persons -= 1
 
     socketio.emit('DPIR2', { "value": data["value"] })
@@ -273,6 +277,15 @@ def handle_gsg(data):
         write_alarm_to_influx({ "value": 1 })
 
     socketio.emit("GSG", { "value": value })
+
+def hadnle_rdht(data):
+    value = data["value"]
+    name = data["name"]
+    measurement = data["measurement"]
+    if measurement == "Temperature":
+        socketio.emit(f"{name}-temp", { "value": value })
+    if measurement == "Humidity":
+        socketio.emit(f"{name}-hum", { "value": value })
     
 def write_sensor_to_influx(data):
     write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)

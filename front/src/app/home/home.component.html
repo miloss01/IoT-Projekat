@@ -6,7 +6,9 @@
 
 <p>(DL) Door Light: {{dl_value}}</p>
 <p>(DPIR1) Door PIR 1: {{dpir1_value}}</p>
+<p>(DPIR2) Door PIR 2: {{dpir2_value}}</p>
 <p>(DUS1) Door US 1: {{dus1_value}}</p>
+<p>(DUS2) Door US 2: {{dus2_value}}</p>
 <p>(DS1) Door Sensor 1: {{ds1_value}}</p>
 <p>(DS2) Door Sensor 2: {{ds2_value}}</p>
 <p>(DB) Door Buzzer: {{db_value}}</p>
@@ -18,7 +20,11 @@
 <p>(GDHT) Garage DHT: Temp-{{gdht_temp_value}}, Hum-{{gdht_hum_value}}</p>
 <p>(GLCD) Garage LCD: T-{{gdht_temp_value}} H-{{gdht_hum_value}}</p>
 <p>(B4SD) Bedroom 4 Segment Display: {{b4sd_value}}</p>
-<p>(GSG) Gun Safe Gyro: {{gsg_value}}</p>
+<p>(GSG) Gun Safe Gyro: Rotation {{gsg_value}}</p>
+<p>(RDHT1) Room DHT: Temp-{{rdht1_temp_value}}, Hum-{{rdht1_hum_value}}</p>
+<p>(RDHT2) Room DHT: Temp-{{rdht2_temp_value}}, Hum-{{rdht2_hum_value}}</p>
+<p>(RDHT3) Room DHT: Temp-{{rdht3_temp_value}}, Hum-{{rdht3_hum_value}}</p>
+<p>(RDHT4) Room DHT: Temp-{{rdht4_temp_value}}, Hum-{{rdht4_hum_value}}</p>
 
 <input [(ngModel)]="pin" />
 <button (click)="send_alarm_pin()">Send alarm pin</button>

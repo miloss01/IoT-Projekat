@@ -20,7 +20,9 @@ export class HomeComponent implements OnInit {
 
   dl_value: string = ""
   dpir1_value: number = 0
+  dpir2_value: number = 0
   dus1_value: number = 0
+  dus2_value: number = 0
   ds1_value: number = 0
   ds2_value: number = 0
   db_value: number = 0
@@ -34,6 +36,15 @@ export class HomeComponent implements OnInit {
   b4sd_value: string = ""
   b4sd_placeholder: string = ""
   gsg_value: string = ""
+
+  rdht1_temp_value: number = 0
+  rdht1_hum_value: number = 0
+  rdht2_temp_value: number = 0
+  rdht2_hum_value: number = 0
+  rdht3_temp_value: number = 0
+  rdht3_hum_value: number = 0
+  rdht4_temp_value: number = 0
+  rdht4_hum_value: number = 0
 
   ngOnInit(): void {
     this.socketService.getMessage().subscribe(message => {
@@ -70,6 +81,16 @@ export class HomeComponent implements OnInit {
     this.socketService.get_DUS1().subscribe(message => {
       console.log(message)
       this.dus1_value = message["value"]
+    })
+
+    this.socketService.get_DPIR2().subscribe(message => {
+      console.log(message)
+      this.dpir2_value = message["value"]
+    })
+
+    this.socketService.get_DUS2().subscribe(message => {
+      console.log(message)
+      this.dus2_value = message["value"]
     })
 
     this.socketService.get_DS1().subscribe(message => {
@@ -134,6 +155,46 @@ export class HomeComponent implements OnInit {
     this.socketService.get_GSG().subscribe(message => {
       console.log(message)
       this.gsg_value = message["value"]
+    })
+
+    this.socketService.get_RDHT1_temp().subscribe(message => {
+      console.log(message)
+      this.rdht1_temp_value = message["value"]
+    })
+
+    this.socketService.get_RDHT1_hum().subscribe(message => {
+      console.log(message)
+      this.rdht1_hum_value = message["value"]
+    })
+
+    this.socketService.get_RDHT2_temp().subscribe(message => {
+      console.log(message)
+      this.rdht2_temp_value = message["value"]
+    })
+
+    this.socketService.get_RDHT2_hum().subscribe(message => {
+      console.log(message)
+      this.rdht2_hum_value = message["value"]
+    })
+    
+    this.socketService.get_RDHT3_temp().subscribe(message => {
+      console.log(message)
+      this.rdht3_temp_value = message["value"]
+    })
+
+    this.socketService.get_RDHT3_hum().subscribe(message => {
+      console.log(message)
+      this.rdht3_hum_value = message["value"]
+    })
+
+    this.socketService.get_RDHT4_temp().subscribe(message => {
+      console.log(message)
+      this.rdht4_temp_value = message["value"]
+    })
+
+    this.socketService.get_RDHT4_hum().subscribe(message => {
+      console.log(message)
+      this.rdht4_hum_value = message["value"]
     })
   }
 

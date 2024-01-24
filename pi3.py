@@ -56,11 +56,11 @@ if __name__ == "__main__":
     b4sd_settings = settings['B4SD']
     dl_settings = settings['DL']
 
-    # run_dht(rdht4_settings, threads, stop_event)
+    run_dht(rdht4_settings, threads, stop_event)
     
     # run_pir(rpir4_settings, dl_settings, threads, stop_event, rpir4_event)
 
-    run_b4sd(b4sd_settings, threads, stop_event, sensor_event)
+    # run_b4sd(b4sd_settings, threads, stop_event, sensor_event)
 
     menu(settings)
     raise KeyboardInterrupt

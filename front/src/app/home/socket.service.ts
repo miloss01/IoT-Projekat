@@ -50,6 +50,12 @@ export class SocketService {
   get_DUS1() {
     return this.socket.fromEvent('DUS1').pipe(map((data: any) => data))
   }
+  get_DPIR2() {
+    return this.socket.fromEvent('DPIR2').pipe(map((data: any) => data))
+  }
+  get_DUS2() {
+    return this.socket.fromEvent('DUS2').pipe(map((data: any) => data))
+  }
   get_DS1() {
     return this.socket.fromEvent('DS1').pipe(map((data: any) => data))
   }
@@ -85,5 +91,30 @@ export class SocketService {
   }
   get_GSG() {
     return this.socket.fromEvent('GSG').pipe(map((data: any) => data))
+  }
+  
+  get_RDHT1_temp() {
+    return this.socket.fromEvent('RDHT1-temp').pipe(map((data: any) => data))
+  }
+  get_RDHT1_hum() {
+    return this.socket.fromEvent('RDHT1-hum').pipe(map((data: any) => data))
+  }
+  get_RDHT2_temp() {
+    return this.socket.fromEvent('RDHT2-temp').pipe(map((data: any) => data))
+  }
+  get_RDHT2_hum() {
+    return this.socket.fromEvent('RDHT2-hum').pipe(map((data: any) => data))
+  }
+  get_RDHT3_temp() {
+    return this.socket.fromEvent('RDHT3-temp').pipe(map((data: any) => data))
+  }
+  get_RDHT3_hum() {
+    return this.socket.fromEvent('RDHT3-hum').pipe(map((data: any) => data))
+  }
+  get_RDHT4_temp() {
+    return this.socket.fromEvent('RDHT4-temp').pipe(map((data: any) => data))
+  }
+  get_RDHT4_hum() {
+    return this.socket.fromEvent('RDHT4-hum').pipe(map((data: any) => data))
   }
 }

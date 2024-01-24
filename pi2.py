@@ -66,13 +66,13 @@ if __name__ == "__main__":
     # run_dht(gdht_settings, threads, stop_event)
     # run_dht(rdht3_settings, threads, stop_event)
     
-    # run_uds(dus2_settings, threads, stop_event)
+    run_uds(dus2_settings, threads, stop_event)
     
-    # run_pir(dpir2_settings, dl_settings, threads, stop_event, dpir2_event)
+    run_pir(dpir2_settings, dl_settings, threads, stop_event, dpir2_event)
     # run_pir(rpir3_settings, dl_settings, threads, stop_event, rpir3_event)
 
     # run_button(ds2_settings, threads, stop_event, sensor_event)
-    run_gyro(gsg_settings, threads, stop_event, gsg_event)
+    # run_gyro(gsg_settings, threads, stop_event, gsg_event)
 
     menu(settings)
     raise KeyboardInterrupt
