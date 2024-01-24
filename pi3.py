@@ -9,6 +9,7 @@ from components.led import run_led
 from components.buzz import run_buzz
 from components.keypad import run_keypad
 from components.b4sd import run_b4sd
+from components.ir_receiver import run_ir
 import time
 
 # try:
@@ -47,36 +48,23 @@ if __name__ == "__main__":
   threads = []
   stop_event = threading.Event()
 
-  dpir1_event = threading.Event()
-  rpir1_event = threading.Event()
-  rpir2_event = threading.Event()
+  rpir4_event = threading.Event()
   sensor_event = threading.Event()
+  bir_event = threading.Event()
 
   try:
-    rdht1_settings = settings['RDHT1']
-    rdht2_settings = settings['RDHT2']
-    gdht_settings = settings['GDHT']
-    dus1_settings = settings['DUS1']
-    dpir1_settings = settings['DPIR1']
-    rpir1_settings = settings['RPIR1']
-    rpir2_settings = settings['RPIR2']
-    ds1_settings = settings['DS1']
+    rpir4_settings = settings['RPIR4']
+    rdht4_settings = settings['RDHT4']
     b4sd_settings = settings['B4SD']
-
+    bir_settings = settings['BIR']
     dl_settings = settings['DL']
 
-    # run_dht(gdht_settings, threads, stop_event)
-    # run_dht(rdht1_settings, threads, stop_event)
-    # run_dht(rdht2_settings, threads, stop_event)
-    #
-    # run_uds(dus1_settings, threads, stop_event)
-    #
-    # run_pir(dpir1_settings, dl_settings, threads, stop_event, dpir1_event)
-    # run_pir(rpir1_settings, dl_settings, threads, stop_event, rpir1_event)
-    # run_pir(rpir2_settings, dl_settings, threads, stop_event, rpir2_event)
+    # run_dht(rdht4_settings, threads, stop_event)
+    
+    # run_pir(rpir4_settings, dl_settings, threads, stop_event, rpir4_event)
 
-    # run_button(ds1_settings, threads, stop_event, sensor_event)
-    run_b4sd(b4sd_settings, threads, stop_event, sensor_event)
+    # run_b4sd(b4sd_settings, threads, stop_event, sensor_event)
+    # run_ir(bir_settings, threads, stop_event, bir_event)
 
     menu(settings)
     raise KeyboardInterrupt

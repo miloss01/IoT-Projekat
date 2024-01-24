@@ -2,41 +2,72 @@
     "RDHT1": {
         "simulated": true,
         "pin": 17,
-        "delay": 2
+        "delay": 3,
+        "pi": 1,
+        "name": "RDHT1"
     },
     "RDHT2": {
         "simulated": true,
         "pin": 17,
-        "delay": 3
+        "delay": 3,
+        "pi": 1,
+        "name": "RDHT2"
     },
     "DUS1": {
         "simulated": true,
-        "delay": 3
+        "delay": 2,
+        "pi": 1,
+        "name": "DUS1",
+        "trig": 23,
+        "echo": 24
     },
     "DPIR1": {
         "simulated": true,
-        "delay": 2
+        "delay": 7,
+        "pin": 23,
+        "name": "DPIR1",
+        "pi": 1
     },
     "RPIR1": {
         "simulated": true,
-        "delay": 2
+        "delay": 5,
+        "pin": 18,
+        "name": "RPIR1",
+        "pi": 1
     },
     "RPIR2": {
         "simulated": true,
-        "delay": 2
+        "delay": 2,
+        "pin": 18,
+        "name": "RPIR2",
+        "pi": 1
     },
     "DS1": {
         "simulated": true,
-        "port_button": 17
+        "name": "DS1",
+        "port_button": 18,
+        "pi": 1,
+        "pin": 18,
+        "delay": 7
     },
     "DL": {
-        "simulated": true
+        "simulated": true,
+        "name": "DL",
+        "pi": 1,
+        "pin": 18,
+        "duration": 3
     },
     "DB": {
-        "simulated": true
+        "simulated": true,
+        "name": "DB",
+        "pi": 1,
+        "pin": 18,
+        "duration": 2
     },
     "DMS": {
         "simulated": true,
+        "name": "DMS",
+        "pi": 1,
         "text": "1234AB",
         "C1": 25,
         "C2": 8,
@@ -46,5 +77,118 @@
         "R2": 16,
         "R3": 20,
         "R4": 21
+    },
+
+
+
+
+
+
+    
+    "GDHT": {
+        "simulated": true,
+        "pin": 17,
+        "delay": 3,
+        "pi": 2,
+        "name": "GDHT"
+    },
+    "DS2": {
+        "simulated": true,
+        "name": "DS2",
+        "port_button": 18,
+        "pi": 2,
+        "pin": 18,
+        "delay": 7
+    },
+    "DUS2": {
+        "simulated": true,
+        "delay": 2,
+        "pi": 2,
+        "name": "DUS2",
+        "trig": 23,
+        "echo": 24
+    },
+    "DPIR2": {
+        "simulated": true,
+        "delay": 7,
+        "pin": 23,
+        "name": "DPIR2",
+        "pi": 2
+    },
+    "GLCD": {
+        "simulated": true,
+        "delay": 7,
+        "pin": 23,
+        "name": "GLCD",
+        "pi": 2
+    },
+    "GSG": {
+        "simulated": true,
+        "delay": 3,
+        "pin": 23,
+        "name": "GSG",
+        "pi": 2
+    },
+    "RPIR3": {
+        "simulated": true,
+        "delay": 2,
+        "pin": 18,
+        "name": "RPIR3",
+        "pi": 2
+    },
+    "RDHT3": {
+        "simulated": true,
+        "pin": 17,
+        "delay": 3,
+        "pi": 2,
+        "name": "RDHT3"
+    },
+
+
+
+
+
+
+    
+    "B4SD": {
+        "simulated": true,
+        "name": "B4SD",
+        "pi": 3,
+        "delay": 4
+    },
+    "RPIR4": {
+        "simulated": true,
+        "delay": 2,
+        "pin": 18,
+        "name": "RPIR4",
+        "pi": 3
+    },
+    "RDHT4": {
+        "simulated": true,
+        "pin": 17,
+        "delay": 3,
+        "pi": 3,
+        "name": "RDHT4"
+    },
+    "BB": {
+        "simulated": true,
+        "name": "BB",
+        "pi": 3,
+        "pin": 18,
+        "duration": 2
+    },
+    "BIR": {
+        "simulated": true,
+        "name": "BIR",
+        "pi": 3,
+        "pin": 18,
+        "delay": 5
+    },
+    "BRGB": {
+        "simulated": true,
+        "name": "BRGB",
+        "pi": 3,
+        "pin": 18,
+        "duration": 2
     }
 }

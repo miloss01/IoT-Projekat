@@ -1,0 +1,69 @@
+
+<h3>ACTIVE: {{active}}</h3>
+<h3>PERSONS: {{persons}}</h3>
+<h3>ALARM: {{alarm}}</h3>
+<h3>CLOCK: {{clock}}</h3>
+
+<p>(DL) Door Light: {{dl_value}}</p>
+<p>(DPIR1) Door PIR 1: {{dpir1_value}}</p>
+<p>(DPIR2) Door PIR 2: {{dpir2_value}}</p>
+<p>(DUS1) Door US 1: {{dus1_value}}</p>
+<p>(DUS2) Door US 2: {{dus2_value}}</p>
+<p>(DS1) Door Sensor 1: {{ds1_value}}</p>
+<p>(DS2) Door Sensor 2: {{ds2_value}}</p>
+<p>(DB) Door Buzzer: {{db_value}}</p>
+<p>(BB) Bedroom Buzzer: {{bb_value}}</p>
+<p>(RPIR1) Room PIR 1: {{rpir1_value}}</p>
+<p>(RPIR2) Room PIR 2: {{rpir2_value}}</p>
+<p>(RPIR3) Room PIR 3: {{rpir3_value}}</p>
+<p>(RPIR4) Room PIR 4: {{rpir4_value}}</p>
+<p>(GDHT) Garage DHT: Temp-{{gdht_temp_value}}, Hum-{{gdht_hum_value}}</p>
+<p>(GLCD) Garage LCD: T-{{gdht_temp_value}} H-{{gdht_hum_value}}</p>
+<p>(B4SD) Bedroom 4 Segment Display: {{b4sd_value}}</p>
+<p>(GSG) Gun Safe Gyro: Rotation {{gsg_value}}</p>
+<p>(RDHT1) Room DHT: Temp-{{rdht1_temp_value}}, Hum-{{rdht1_hum_value}}</p>
+<p>(RDHT2) Room DHT: Temp-{{rdht2_temp_value}}, Hum-{{rdht2_hum_value}}</p>
+<p>(RDHT3) Room DHT: Temp-{{rdht3_temp_value}}, Hum-{{rdht3_hum_value}}</p>
+<p>(RDHT4) Room DHT: Temp-{{rdht4_temp_value}}, Hum-{{rdht4_hum_value}}</p>
+<p>(BRGB) Bedroom RGB: 
+  <span style="color: red">{{r}}</span> 
+  <span style="color: green">{{g}}</span> 
+  <span style="color: blue">{{b}}</span>
+</p>
+<label><input type="checkbox" [(ngModel)]="redChecked"> Red</label>
+<label><input type="checkbox" [(ngModel)]="greenChecked"> Green</label>
+<label><input type="checkbox" [(ngModel)]="blueChecked"> Blue</label>
+<button (click)="send_rgb()">Send RGB</button>
+<br><br>
+
+<input [(ngModel)]="pin" />
+<button (click)="send_alarm_pin()">Send alarm pin</button>
+<button (click)="send_activate_pin()">Send activate pin</button>
+<br><br>
+<input [(ngModel)]="time" />
+<button (click)="send_clock()">Send clock</button>
+<button (click)="stop_clock()">Stop clock</button>
+
+<button (click)="probaNaServer()">asdads</button>
+
+<br><br><br><br>
+
+<!-- <iframe src="http://localhost:8087/d-solo/c7413006-7f3c-4908-894b-52a77577de07/iot-dashboard?orgId=1&from=1705936330282&to=1705939402590&panelId=8" width="450" height="200" frameborder="0"></iframe>
+
+<iframe src="http://localhost:8087/d-solo/c7413006-7f3c-4908-894b-52a77577de07/iot-dashboard?orgId=1&from=1702403533559&to=1702403541477&panelId=7" width="450" height="200" frameborder="0"></iframe>
+
+<iframe src="http://localhost:8087/d-solo/c7413006-7f3c-4908-894b-52a77577de07/iot-dashboard?orgId=1&from=1702403533559&to=1702403541477&panelId=6" width="450" height="200" frameborder="0"></iframe>
+
+<iframe src="http://localhost:8087/d-solo/c7413006-7f3c-4908-894b-52a77577de07/iot-dashboard?orgId=1&from=1702403533559&to=1702403541477&panelId=5" width="450" height="200" frameborder="0"></iframe>
+
+<iframe src="http://localhost:8087/d-solo/c7413006-7f3c-4908-894b-52a77577de07/iot-dashboard?orgId=1&from=1702403533559&to=1702403541477&panelId=4" width="450" height="200" frameborder="0"></iframe>
+
+<iframe src="http://localhost:8087/d-solo/c7413006-7f3c-4908-894b-52a77577de07/iot-dashboard?orgId=1&from=1702403533559&to=1702403541477&panelId=3" width="450" height="200" frameborder="0"></iframe>
+
+<iframe src="http://localhost:8087/d-solo/c7413006-7f3c-4908-894b-52a77577de07/iot-dashboard?orgId=1&from=1702403533559&to=1702403541477&panelId=2" width="450" height="200" frameborder="0"></iframe>
+
+<iframe src="http://localhost:8087/d-solo/c7413006-7f3c-4908-894b-52a77577de07/iot-dashboard?orgId=1&from=1702403533559&to=1702403541477&panelId=1" width="450" height="200" frameborder="0"></iframe>
+
+<iframe src="http://localhost:8087/d-solo/c7413006-7f3c-4908-894b-52a77577de07/iot-dashboard?orgId=1&from=1702403533559&to=1702403541477&panelId=9" width="450" height="200" frameborder="0"></iframe>
+
+<iframe src="http://localhost:8087/d-solo/c7413006-7f3c-4908-894b-52a77577de07/iot-dashboard?orgId=1&from=1705936330282&to=1706085372497&panelId=10" width="450" height="200" frameborder="0"></iframe> -->
