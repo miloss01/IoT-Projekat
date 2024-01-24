@@ -182,7 +182,7 @@
         "name": "BIR",
         "pi": 3,
         "pin": 18,
-        "duration": 2
+        "delay": 5
     },
     "BRGB": {
         "simulated": true,

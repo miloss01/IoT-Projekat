@@ -51,6 +51,7 @@ def on_connect(client, userdata, flags, rc):
     mqtt_client.subscribe("DMS")
     mqtt_client.subscribe("B4SD")
     mqtt_client.subscribe("GYRO")
+    mqtt_client.subscribe("BIR")
     print("connected")
 
 mqtt_client.on_connect = on_connect
@@ -70,7 +71,7 @@ should_bb = 0
 settings = load_settings()
 
 def activate():
-    time.sleep(6)
+    time.sleep(2)
     global active
     active = True
     socketio.emit('active', { "value": active })
@@ -90,7 +91,7 @@ def save_to_db(data):
             if pin != APIN:
                 return
             else:
-                active = True
+                # active = True
                 active_thread = threading.Thread(target=activate)
                 active_thread.start()
         else:
@@ -118,8 +119,8 @@ def save_to_db(data):
                 handle_gsg(data)
             if sensor in ["RDHT1", "RDHT2", "RDHT3", "RDHT4"]:
                 hadnle_rdht(data)
-
-                # RDHT1, RDHT2, DUS2, DPIR2, RDHT3, RDHT4
+            if sensor == "BIR":
+                handle_bir(data)
 
     except:
         print("losa poruka")
@@ -219,10 +220,13 @@ def handle_ds(data):
 def handle_dms(data):
     pin = data["value"]
     global alarm
+    global active
 
-    if pin == PIN:
+    if pin == PIN and alarm == True:
         alarm = False
+        active = False
         socketio.emit("alarm", { "value": alarm })
+        socketio.emit("active", { "value": active })
         write_alarm_to_influx({ "value": 0 })
         change_buzz(False, True)
         socketio.emit("DB", { "value": 0 })
@@ -286,6 +290,11 @@ def hadnle_rdht(data):
         socketio.emit(f"{name}-temp", { "value": value })
     if measurement == "Humidity":
         socketio.emit(f"{name}-hum", { "value": value })
+
+def handle_bir(data):
+    value = data["value"] # r:g:b 
+    socketio.emit(f"BIR", { "value": value })
+    # ovde treba da se pale i gase lampice u realnoj implementaciji
     
 def write_sensor_to_influx(data):
     write_api = influxdb_client.write_api(write_options=SYNCHRONOUS)
@@ -359,8 +368,10 @@ def activate_pin():
     global active
 
     if pin == APIN:
-        active = True
-        socketio.emit("active", { "value": active })
+        # active = True
+        # socketio.emit("active", { "value": active })
+        active_thread = threading.Thread(target=activate)
+        active_thread.start()
 
     return jsonify({"status": "success"})
 
@@ -405,6 +416,17 @@ def stop_clock():
 
     change_buzz(False, True)
     socketio.emit("BB", { "value": 0 })
+
+    return jsonify({"status": "success"})
+
+@app.route('/rgb', methods=['POST'])
+def set_rgb_color():
+    request_data = request.get_json()
+    rgb = request_data["rgb"] # r:g:b 
+
+    # ovde treba da se pale i gase lampice u realnoj implementaciji
+
+    socketio.emit(f"BIR", { "value": rgb })
 
     return jsonify({"status": "success"})
 

@@ -36,6 +36,12 @@ export class HomeComponent implements OnInit {
   b4sd_value: string = ""
   b4sd_placeholder: string = ""
   gsg_value: string = ""
+  r: string = "0"
+  g: string = "0"
+  b: string = "0"
+  redChecked: boolean = false
+  greenChecked: boolean = false
+  blueChecked: boolean = false
 
   rdht1_temp_value: number = 0
   rdht1_hum_value: number = 0
@@ -157,6 +163,15 @@ export class HomeComponent implements OnInit {
       this.gsg_value = message["value"]
     })
 
+    this.socketService.get_BIR().subscribe(message => {
+      console.log(message)
+      let bir: string = message["value"]
+      let tokens: string[] = bir.split(":")
+      this.r = tokens[0]
+      this.g = tokens[1]
+      this.b = tokens[2]
+    })
+
     this.socketService.get_RDHT1_temp().subscribe(message => {
       console.log(message)
       this.rdht1_temp_value = message["value"]
@@ -219,6 +234,18 @@ export class HomeComponent implements OnInit {
   stop_clock() {
     this.socketService.stop_clock().subscribe(data => {
       this.clock = false
+    })
+  }
+
+  send_rgb() {
+    let redValue = this.redChecked ? '1' : '0'
+    let greenValue = this.greenChecked ? '1' : '0'
+    let blueValue = this.blueChecked ? '1' : '0'
+
+    let rgb = `${redValue}:${greenValue}:${blueValue}`
+
+    this.socketService.send_rgb(rgb).subscribe(data => {
+      console.log("poslat rgb")
     })
   }
 

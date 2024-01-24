@@ -9,6 +9,7 @@ from components.led import run_led
 from components.buzz import run_buzz
 from components.keypad import run_keypad
 from components.b4sd import run_b4sd
+from components.ir_receiver import run_ir
 import time
 
 # try:
@@ -49,18 +50,21 @@ if __name__ == "__main__":
 
   rpir4_event = threading.Event()
   sensor_event = threading.Event()
+  bir_event = threading.Event()
 
   try:
     rpir4_settings = settings['RPIR4']
     rdht4_settings = settings['RDHT4']
     b4sd_settings = settings['B4SD']
+    bir_settings = settings['BIR']
     dl_settings = settings['DL']
 
-    run_dht(rdht4_settings, threads, stop_event)
+    # run_dht(rdht4_settings, threads, stop_event)
     
     # run_pir(rpir4_settings, dl_settings, threads, stop_event, rpir4_event)
 
     # run_b4sd(b4sd_settings, threads, stop_event, sensor_event)
+    # run_ir(bir_settings, threads, stop_event, bir_event)
 
     menu(settings)
     raise KeyboardInterrupt

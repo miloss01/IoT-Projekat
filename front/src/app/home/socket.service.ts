@@ -40,6 +40,9 @@ export class SocketService {
   stop_clock() {
     return this.http.post(this.flask_url + "/stop_clock", {})
   }
+  send_rgb(rgb: string) {
+    return this.http.post(this.flask_url + "/rgb", { "rgb": rgb })
+  }
 
   get_DL() {
     return this.socket.fromEvent('DL').pipe(map((data: any) => data))
@@ -91,6 +94,9 @@ export class SocketService {
   }
   get_GSG() {
     return this.socket.fromEvent('GSG').pipe(map((data: any) => data))
+  }
+  get_BIR() {
+    return this.socket.fromEvent('BIR').pipe(map((data: any) => data))
   }
   
   get_RDHT1_temp() {

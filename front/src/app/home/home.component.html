@@ -25,6 +25,16 @@
 <p>(RDHT2) Room DHT: Temp-{{rdht2_temp_value}}, Hum-{{rdht2_hum_value}}</p>
 <p>(RDHT3) Room DHT: Temp-{{rdht3_temp_value}}, Hum-{{rdht3_hum_value}}</p>
 <p>(RDHT4) Room DHT: Temp-{{rdht4_temp_value}}, Hum-{{rdht4_hum_value}}</p>
+<p>(BRGB) Bedroom RGB: 
+  <span style="color: red">{{r}}</span> 
+  <span style="color: green">{{g}}</span> 
+  <span style="color: blue">{{b}}</span>
+</p>
+<label><input type="checkbox" [(ngModel)]="redChecked"> Red</label>
+<label><input type="checkbox" [(ngModel)]="greenChecked"> Green</label>
+<label><input type="checkbox" [(ngModel)]="blueChecked"> Blue</label>
+<button (click)="send_rgb()">Send RGB</button>
+<br><br>
 
 <input [(ngModel)]="pin" />
 <button (click)="send_alarm_pin()">Send alarm pin</button>
